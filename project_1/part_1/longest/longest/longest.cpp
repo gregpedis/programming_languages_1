@@ -30,6 +30,8 @@ int FindLocalOptimalLeftPrefix(std::vector<std::pair<int, int>>& importantIndexe
 
 
 // Execution entrypoint.
+// Algorithm reference:
+// https://cs.stackexchange.com/questions/129353/find-the-length-of-the-longest-subarray-having-sum-greater-than-k
 int main(int argc, char** argv)
 {
 	// Get the filename from the first command-line argument and parse its contents.
@@ -52,35 +54,29 @@ InputVals ParseInputFile(std::string filename)
 {
 	InputVals inputVals;
 
-	// just to test.
-	inputVals.hospital_count = 3;
-	inputVals.days = { 42, -10, 8, 1, 11, -6, -12, 16, -15, -11, 13 };
-	inputVals.days = { 42,-10, 8 };
-	return inputVals;
-	// remove this shit
-
 	std::string line1, line2;
 	std::string delim = " ";
 	std::string token;
-	int pos1 = 0;
-	int pos2;
+	size_t pos = 0;
 
-	std::ifstream inputFile(filename);
-	inputFile.open(filename);
+	std::ifstream inputFile(filename); //implicit constructor call.
 	std::getline(inputFile, line1);
 	std::getline(inputFile, line2);
 
-	pos2 = line1.find(delim);
-	inputVals.hospital_count = std::stoi(line1.substr(pos2));
+	pos = line1.find(delim);
+	inputVals.hospital_count = std::stoi(line1.substr(pos));
 
-	while ((pos2 = line2.find(delim)) != std::string::npos)
+	while ((pos = line2.find(delim)) != std::string::npos)
 	{
-		token = line2.substr(pos1, pos2);
+		token = line2.substr(0, pos);
 		inputVals.days.push_back(std::stoi(token));
-		pos1 = pos2;
+		line2.erase(0, pos + delim.length());
 	}
 
 	inputFile.close();
+
+	//	inputVals.days = { 42,-10, 8 };
+	//	inputVals.days = { 42, -10, 8, 1, 11, -6, -12, 16, -15, -11, 13 };
 	return inputVals;
 }
 
