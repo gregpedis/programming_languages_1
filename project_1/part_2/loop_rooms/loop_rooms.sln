@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "loop_rooms", "loop_rooms\loop_rooms.vcxproj", "{3E3D16C6-752A-4253-AA5D-335113A8C62A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Debug|x64.ActiveCfg = Debug|x64
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Debug|x64.Build.0 = Debug|x64
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Debug|x86.Build.0 = Debug|Win32
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Release|x64.ActiveCfg = Release|x64
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Release|x64.Build.0 = Release|x64
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Release|x86.ActiveCfg = Release|Win32
+		{3E3D16C6-752A-4253-AA5D-335113A8C62A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57FAA65E-9B63-4DE3-95B9-63B21055C5A1}
+	EndGlobalSection
+EndGlobal

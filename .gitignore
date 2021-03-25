@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Configuration
+*.user
+
+# Directories
+.vs/
+Debug/
+
