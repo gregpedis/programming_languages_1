@@ -1,6 +1,9 @@
 ● antonis-Lenovo-ideapad-320-15IKB-Touch
+● antonis-Lenovo-ideapad-320-15IKB-Touch
+
     State: degraded
      Jobs: 0 queued
+    Since: Thu 2021-03-25 13:47:48 EET; 2h 22min ago
    Failed: 1 units
     Since: Thu 2021-03-25 13:47:48 EET; 2h 22min ago
    CGroup: /
