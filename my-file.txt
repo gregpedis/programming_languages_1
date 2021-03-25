@@ -1,1 +1,268 @@
-hello idiot
+● antonis-Lenovo-ideapad-320-15IKB-Touch
+    State: degraded
+     Jobs: 0 queued
+   Failed: 1 units
+    Since: Thu 2021-03-25 13:47:48 EET; 2h 22min ago
+   CGroup: /
+           ├─user.slice
+           │ ├─user-1000.slice
+           │ │ ├─user@1000.service
+           │ │ │ ├─gvfs-goa-volume-monitor.service
+           │ │ │ │ └─5596 /usr/lib/gvfs/gvfs-goa-volume-monitor
+           │ │ │ ├─xdg-permission-store.service
+           │ │ │ │ └─5555 /usr/libexec/xdg-permission-store
+           │ │ │ ├─xdg-document-portal.service
+           │ │ │ │ └─3431 /usr/libexec/xdg-document-portal
+           │ │ │ ├─xdg-desktop-portal.service
+           │ │ │ │ └─8804 /usr/libexec/xdg-desktop-portal
+           │ │ │ ├─evolution-calendar-factory.service
+           │ │ │ │ ├─5774 /usr/lib/evolution/evolution-calendar-factory
+           │ │ │ │ └─5817 /usr/lib/evolution/evolution-calendar-factory-subprocess --factory all --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.Calendarx5774x2 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/Calendar/5774/2
+           │ │ │ ├─gvfs-daemon.service
+           │ │ │ │ ├─ 5518 /usr/lib/gvfs/gvfsd
+           │ │ │ │ ├─ 5523 /usr/lib/gvfs/gvfsd-fuse /run/user/1000/gvfs -f -o big_writes
+           │ │ │ │ ├─ 5803 /usr/lib/gvfs/gvfsd-trash --spawner :1.22 /org/gtk/gvfs/exec_spaw/0
+           │ │ │ │ └─21925 /usr/lib/gvfs/gvfsd-http --spawner :1.22 /org/gtk/gvfs/exec_spaw/1
+           │ │ │ ├─evolution-source-registry.service
+           │ │ │ │ └─5605 /usr/lib/evolution/evolution-source-registry
+           │ │ │ ├─gvfs-udisks2-volume-monitor.service
+           │ │ │ │ └─5588 /usr/lib/gvfs/gvfs-udisks2-volume-monitor
+           │ │ │ ├─gnome-terminal-server.service
+           │ │ │ │ ├─14364 tmux
+           │ │ │ │ ├─14366 tmux
+           │ │ │ │ ├─14367 -bash
+           │ │ │ │ ├─14381 -bash
+           │ │ │ │ ├─14404 -bash
+           │ │ │ │ ├─14415 htop
+           │ │ │ │ ├─14436 -bash
+           │ │ │ │ ├─15828 sudo systemctl status
+           │ │ │ │ ├─15829 systemctl status
+           │ │ │ │ ├─20233 /usr/lib/gnome-terminal/gnome-terminal-server
+           │ │ │ │ └─20766 bash
+           │ │ │ ├─init.scope
+           │ │ │ │ ├─4266 /lib/systemd/systemd --user
+           │ │ │ │ └─4267 (sd-pam)
+           │ │ │ ├─gvfs-gphoto2-volume-monitor.service
+           │ │ │ │ └─5635 /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+           │ │ │ ├─xdg-desktop-portal-gtk.service
+           │ │ │ │ └─10711 /usr/libexec/xdg-desktop-portal-gtk
+           │ │ │ ├─at-spi-dbus-bus.service
+           │ │ │ │ ├─5486 /usr/lib/at-spi2-core/at-spi-bus-launcher
+           │ │ │ │ ├─5491 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+           │ │ │ │ └─5493 /usr/lib/at-spi2-core/at-spi2-registryd --use-gnome-session
+           │ │ │ ├─gvfs-metadata.service
+           │ │ │ │ └─5904 /usr/lib/gvfs/gvfsd-metadata
+           │ │ │ ├─dbus.service
+           │ │ │ │ ├─ 4978 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │ │ │ │ ├─ 5562 /usr/lib/gnome-shell/gnome-shell-calendar-server
+           │ │ │ │ ├─ 5568 /usr/lib/ibus/ibus-portal
+           │ │ │ │ ├─ 5585 /usr/lib/dconf/dconf-service
+           │ │ │ │ ├─ 5600 /usr/lib/gnome-online-accounts/goa-daemon
+           │ │ │ │ ├─ 5625 /usr/lib/gnome-online-accounts/goa-identity-service
+           │ │ │ │ └─12287 /usr/bin/nautilus --gapplication-service
+           │ │ │ ├─evolution-addressbook-factory.service
+           │ │ │ │ ├─5832 /usr/lib/evolution/evolution-addressbook-factory
+           │ │ │ │ └─5842 /usr/lib/evolution/evolution-addressbook-factory-subprocess --factory all --bus-name org.gnome.evolution.dataserver.Subprocess.Backend.AddressBookx5832x2 --own-path /org/gnome/evolution/dataserver/Subprocess/Backend/AddressBook/5832/2
+           │ │ │ ├─gvfs-mtp-volume-monitor.service
+           │ │ │ │ └─5592 /usr/lib/gvfs/gvfs-mtp-volume-monitor
+           │ │ │ └─gvfs-afc-volume-monitor.service
+           │ │ │   └─5630 /usr/lib/gvfs/gvfs-afc-volume-monitor
+           │ │ └─session-2.scope
+           │ │   ├─ 2043 /snap/discord/122/usr/share/discord/Discord --type=zygote --no-zygote-sandbox --no-sandbox
+           │ │   ├─ 2379 /snap/discord/122/usr/share/discord/Discord --type=zygote --no-sandbox
+           │ │   ├─ 2722 /snap/discord/122/usr/share/discord/Discord --no-sandbox
+           │ │   ├─ 3039 /snap/discord/122/usr/share/discord/Discord --type=utility --field-trial-handle=16948951659889622157,792550493075099688,131072 --enable-features=WebComponentsV0Enabled --disable-features=SpareRendererForSitePerProcess --lang=en-US --service-sandbox-type=audio --no-sandbox --enable-crash-reporter=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel --global-crash-keys=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel,_companyName=Discord Inc.,_productName=Discord,_version=0.0.14 --shared-files=v8_snapshot_data:100
+           │ │   ├─ 3352 /opt/google/chrome/chrome
+           │ │   ├─ 3398 cat
+           │ │   ├─ 3400 cat
+           │ │   ├─ 3979 gdm-session-worker [pam/gdm-password]
+           │ │   ├─ 4410 /usr/bin/gnome-keyring-daemon --daemonize --login
+           │ │   ├─ 4436 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu gnome-session --session=ubuntu
+           │ │   ├─ 4453 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+           │ │   ├─ 4981 /usr/lib/gnome-session/gnome-session-binary --session=ubuntu
+           │ │   ├─ 5483 /usr/bin/ssh-agent /usr/bin/im-launch env GNOME_SHELL_SESSION_MODE=ubuntu gnome-session --session=ubuntu
+           │ │   ├─ 5511 /usr/bin/gnome-shell
+           │ │   ├─ 5528 /usr/bin/pulseaudio --start --log-target=syslog
+           │ │   ├─ 5554 ibus-daemon --xim --panel disable
+           │ │   ├─ 5564 /usr/lib/ibus/ibus-dconf
+           │ │   ├─ 5566 /usr/lib/ibus/ibus-x11 --kill-daemon
+           │ │   ├─ 5639 /usr/lib/gnome-settings-daemon/gsd-power
+           │ │   ├─ 5642 /usr/lib/gnome-settings-daemon/gsd-print-notifications
+           │ │   ├─ 5643 /usr/lib/gnome-settings-daemon/gsd-rfkill
+           │ │   ├─ 5644 /usr/lib/gnome-settings-daemon/gsd-screensaver-proxy
+           │ │   ├─ 5645 /usr/lib/gnome-settings-daemon/gsd-sharing
+           │ │   ├─ 5648 /usr/lib/gnome-settings-daemon/gsd-smartcard
+           │ │   ├─ 5652 /usr/lib/gnome-settings-daemon/gsd-sound
+           │ │   ├─ 5655 /usr/lib/gnome-settings-daemon/gsd-xsettings
+           │ │   ├─ 5675 /usr/lib/gnome-settings-daemon/gsd-wacom
+           │ │   ├─ 5677 /usr/lib/gnome-settings-daemon/gsd-a11y-settings
+           │ │   ├─ 5678 /usr/lib/gnome-settings-daemon/gsd-clipboard
+           │ │   ├─ 5679 /usr/lib/gnome-settings-daemon/gsd-color
+           │ │   ├─ 5682 /usr/lib/gnome-settings-daemon/gsd-datetime
+           │ │   ├─ 5683 /usr/lib/gnome-settings-daemon/gsd-housekeeping
+           │ │   ├─ 5684 /usr/lib/gnome-settings-daemon/gsd-keyboard
+           │ │   ├─ 5686 /usr/lib/gnome-settings-daemon/gsd-media-keys
+           │ │   ├─ 5689 /usr/lib/gnome-settings-daemon/gsd-mouse
+           │ │   ├─ 5737 /usr/lib/gnome-settings-daemon/gsd-printer
+           │ │   ├─ 5749 nautilus-desktop
+           │ │   ├─ 5756 /usr/lib/gnome-disk-utility/gsd-disk-utility-notify
+           │ │   ├─ 5786 /usr/lib/ibus/ibus-engine-simple
+           │ │   ├─ 6904 /opt/google/chrome/nacl_helper
+           │ │   ├─ 7864 /opt/google/chrome/chrome --type=zygote --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7,
+           │ │   ├─ 9705 /snap/discord/122/usr/share/discord/Discord --type=gpu-process --field-trial-handle=16948951659889622157,792550493075099688,131072 --enable-features=WebComponentsV0Enabled --disable-features=SpareRendererForSitePerProcess --no-sandbox --enable-crash-reporter=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel --global-crash-keys=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel,_companyName=Discord Inc.,_productName=Discord,_version=0.0.14 --gpu-preferences=MAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA= --shared-files
+           │ │   ├─ 9791 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=67 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─10384 /snap/discord/122/usr/share/discord/Discord --type=utility --field-trial-handle=16948951659889622157,792550493075099688,131072 --enable-features=WebComponentsV0Enabled --disable-features=SpareRendererForSitePerProcess --lang=en-US --service-sandbox-type=network --no-sandbox --enable-crash-reporter=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel --global-crash-keys=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel,_companyName=Discord Inc.,_productName=Discord,_version=0.0.14 --shared-files=v8_snapshot_data:100
+           │ │   ├─12372 /usr/bin/gnome-software
+           │ │   ├─12495 /usr/bin/anydesk
+           │ │   ├─13197 update-notifier
+           │ │   ├─14563 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=39 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─15011 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=151 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21028 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=70 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21068 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=71 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21110 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=72 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21129 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=73 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21142 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=74 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21169 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=75 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21248 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=41 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21306 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=86 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21345 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=87 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21386 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=89 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21413 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=91 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21417 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=92 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─21446 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=93 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─24220 /usr/lib/deja-dup/deja-dup-monitor
+           │ │   ├─24818 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=63 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─25637 /opt/google/chrome/chrome --type=zygote --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7,
+           │ │   ├─26595 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=50 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─27266 /opt/google/chrome/chrome --type=gpu-process --field-trial-handle=5354973095919915763,11795239705285768837,131072 --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --gpu-preferences=KAAAAAAAAAAgAAAgAAAAAAAAYAAAAAAAEAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA --shared-files
+           │ │   ├─27570 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=46 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─27906 /opt/google/chrome/chrome --type=utility --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --service-sandbox-type=network --disable-webrtc-apm-in-audio-service --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --shared-files
+           │ │   ├─29305 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=54 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   ├─30411 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=5354973095919915763,11795239705285768837,131072 --lang=en-US --enable-crash-reporter=2233e00c-1929-47c8-afbe-c1b5449b7ef7, --enable-auto-reload --origin-trial-disabled-features=MeasureMemory --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=64 --no-v8-untrusted-code-mitigations --shared-files
+           │ │   └─30496 /snap/discord/122/usr/share/discord/Discord --type=renderer --no-sandbox --autoplay-policy=no-user-gesture-required --field-trial-handle=16948951659889622157,792550493075099688,131072 --enable-features=WebComponentsV0Enabled --disable-features=SpareRendererForSitePerProcess --lang=en-US --enable-crash-reporter=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel --global-crash-keys=56781fb0-79d8-4a1e-9d67-3678d8a04a38,no_channel,_companyName=Discord Inc.,_productName=Discord,_version=0.0.14 --app-path=/snap/discord/122/usr/share/discord/resources/app.asar --no-sandbox --no-zygote --native-window-open --preload=/home/antonis/snap/discord/122/.config/discord/0.0.14/modules/discord_desktop_core/core.asar/app/mainScreenPreload.js --context-isolation --background-color=#2f3136 --enable-spellcheck --enable-websql --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=7 --no-v8-untrusted-code-mitigations --shared-files=v8_snapshot_data:100 --enable-node-leakage-in-renderers
+           │ └─user-121.slice
+           │   ├─session-c1.scope
+           │   │ ├─1233 gdm-session-worker [pam/gdm-launch-environment]
+           │   │ ├─1324 /usr/lib/gdm3/gdm-wayland-session gnome-session --autostart /usr/share/gdm/greeter/autostart
+           │   │ ├─1329 /usr/lib/gnome-session/gnome-session-binary --autostart /usr/share/gdm/greeter/autostart
+           │   │ ├─1652 /usr/bin/gnome-shell
+           │   │ ├─1954 /usr/bin/Xwayland :1024 -rootless -terminate -accessx -core -listen 4 -listen 5 -displayfd 6
+           │   │ ├─2396 ibus-daemon --xim --panel disable
+           │   │ ├─2410 /usr/lib/ibus/ibus-dconf
+           │   │ ├─2413 /usr/lib/ibus/ibus-x11 --kill-daemon
+           │   │ ├─2736 /usr/lib/gnome-settings-daemon/gsd-xsettings
+           │   │ ├─2742 /usr/lib/gnome-settings-daemon/gsd-a11y-settings
+           │   │ ├─2745 /usr/lib/gnome-settings-daemon/gsd-clipboard
+           │   │ ├─2750 /usr/lib/gnome-settings-daemon/gsd-color
+           │   │ ├─2751 /usr/lib/gnome-settings-daemon/gsd-datetime
+           │   │ ├─2753 /usr/lib/gnome-settings-daemon/gsd-housekeeping
+           │   │ ├─2755 /usr/lib/gnome-settings-daemon/gsd-keyboard
+           │   │ ├─2761 /usr/lib/gnome-settings-daemon/gsd-media-keys
+           │   │ ├─2764 /usr/lib/gnome-settings-daemon/gsd-mouse
+           │   │ ├─2765 /usr/lib/gnome-settings-daemon/gsd-power
+           │   │ ├─2772 /usr/lib/gnome-settings-daemon/gsd-print-notifications
+           │   │ ├─2776 /usr/lib/gnome-settings-daemon/gsd-rfkill
+           │   │ ├─2777 /usr/lib/gnome-settings-daemon/gsd-screensaver-proxy
+           │   │ ├─2778 /usr/lib/gnome-settings-daemon/gsd-sharing
+           │   │ ├─2790 /usr/lib/gnome-settings-daemon/gsd-smartcard
+           │   │ ├─2792 /usr/lib/gnome-settings-daemon/gsd-sound
+           │   │ ├─2794 /usr/lib/gnome-settings-daemon/gsd-wacom
+           │   │ └─3255 /usr/lib/ibus/ibus-engine-simple
+           │   └─user@121.service
+           │     ├─xdg-permission-store.service
+           │     │ └─2426 /usr/libexec/xdg-permission-store
+           │     ├─pulseaudio.service
+           │     │ └─1983 /usr/bin/pulseaudio --daemonize=no
+           │     ├─init.scope
+           │     │ ├─1295 /lib/systemd/systemd --user
+           │     │ └─1305 (sd-pam)
+           │     ├─at-spi-dbus-bus.service
+           │     │ ├─1972 /usr/lib/at-spi2-core/at-spi-bus-launcher
+           │     │ ├─1977 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+           │     │ └─1979 /usr/lib/at-spi2-core/at-spi2-registryd --use-gnome-session
+           │     └─dbus.service
+           │       ├─1326 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+           │       └─2416 /usr/lib/ibus/ibus-portal
+           ├─init.scope
+           │ └─1 /lib/systemd/systemd --system --deserialize 18
+           └─system.slice
+             ├─irqbalance.service
+             │ └─1133 /usr/sbin/irqbalance --foreground
+             ├─bolt.service
+             │ └─2732 /usr/lib/x86_64-linux-gnu/boltd
+             ├─packagekit.service
+             │ └─23547 /usr/lib/packagekit/packagekitd
+             ├─systemd-udevd.service
+             │ └─26450 /lib/systemd/systemd-udevd
+             ├─whoopsie.service
+             │ └─24310 /usr/bin/whoopsie -f
+             ├─cron.service
+             │ └─1098 /usr/sbin/cron -f
+             ├─thermald.service
+             │ └─1090 /usr/sbin/thermald --no-daemon --dbus-enable
+             ├─anydesk.service
+             │ ├─12540 /usr/bin/anydesk --backend
+             │ ├─12572 dbus-launch --autolaunch=4fe86ae00db14951b40c948119f06fb2 --binary-syntax --close-stderr
+             │ ├─12573 /usr/bin/dbus-daemon --syslog-only --fork --print-pid 5 --print-address 7 --session
+             │ ├─26062 /usr/bin/anydesk --service
+             │ └─27019 /usr/bin/anydesk --tray
+             ├─polkit.service
+             │ └─1157 /usr/lib/policykit-1/polkitd --no-debug
+             ├─networkd-dispatcher.service
+             │ └─1099 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+             ├─rtkit-daemon.service
+             │ └─1984 /usr/lib/rtkit/rtkit-daemon
+             ├─bluetooth.service
+             │ └─1119 /usr/lib/bluetooth/bluetoothd
+             ├─accounts-daemon.service
+             │ └─23753 /usr/lib/accountsservice/accounts-daemon
+             ├─wpa_supplicant.service
+             │ └─19656 /sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+             ├─ModemManager.service
+             │ └─1095 /usr/sbin/ModemManager --filter-policy=strict
+             ├─systemd-journald.service
+             │ └─20802 /lib/systemd/systemd-journald
+             ├─unattended-upgrades.service
+             │ └─1217 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+             ├─fwupd.service
+             │ └─20171 /usr/lib/fwupd/fwupd
+             ├─colord.service
+             │ └─3305 /usr/lib/colord/colord
+             ├─NetworkManager.service
+             │ ├─ 1114 /usr/sbin/NetworkManager --no-daemon
+             │ └─19688 /sbin/dhclient -d -q -sf /usr/lib/NetworkManager/nm-dhcp-helper -pf /run/dhclient-wlp2s0.pid -lf /var/lib/NetworkManager/dhclient-ffececd6-50c2-454f-83f2-82a5aa114891-wlp2s0.lease -cf /var/lib/NetworkManager/dhclient-wlp2s0.conf wlp2s0
+             ├─snapd.service
+             │ └─19991 /usr/lib/snapd/snapd
+             ├─gdm.service
+             │ └─1228 /usr/sbin/gdm3
+             ├─uuidd.service
+             │ └─26349 /usr/sbin/uuidd --socket-activation
+             ├─rsyslog.service
+             │ └─1101 /usr/sbin/rsyslogd -n
+             ├─kerneloops.service
+             │ ├─1523 /usr/sbin/kerneloops --test
+             │ └─1525 /usr/sbin/kerneloops
+             ├─spice-vdagentd.service
+             │ └─20349 /usr/sbin/spice-vdagentd
+             ├─cups-browsed.service
+             │ └─6046 /usr/sbin/cups-browsed
+             ├─cups.service
+             │ └─6045 /usr/sbin/cupsd -l
+             ├─upower.service
+             │ └─1857 /usr/lib/upower/upowerd
+             ├─systemd-resolved.service
+             │ └─20781 /lib/systemd/systemd-resolved
+             ├─udisks2.service
+             │ └─1134 /usr/lib/udisks2/udisksd
+             ├─acpid.service
+             │ └─1093 /usr/sbin/acpid
+             ├─dbus.service
+             │ ├─ 1103 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             │ └─14855 python3 /usr/lib/software-properties/software-properties-dbus
+             ├─systemd-timesyncd.service
+             │ └─20793 /lib/systemd/systemd-timesyncd
+             ├─avahi-daemon.service
+             │ ├─1123 avahi-daemon: running [antonis-Lenovo-ideapad-320-15IKB-Touch.local]
+             │ └─1161 avahi-daemon: chroot helper
+             └─systemd-logind.service
+               └─1117 /lib/systemd/systemd-logind
