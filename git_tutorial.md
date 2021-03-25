@@ -18,7 +18,7 @@ Some generic help with git commands.
 - git **commit** -> Commits the messages on top of current *local* branch.
 ` git commit -m "This is a commit message"`
 
--git **push** -> Pushes the commits from local branch to origin\branch.
+- git **push** -> Pushes the commits from local branch to origin\branch.
 ` git push`
 
 ## Pulling
