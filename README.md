@@ -5,7 +5,7 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 ## Latest Version
 
 | Project | Part | Language |        State        |
-|---------|------|----------|---------------------|
+|:-------:|:----:|:--------:|:-------------------:|
 |    1    |   1  |    CPP   |     **Finished**    |
 |    1    |   1  |   OCaml  |    Requires work    |
 |    1    |   2  |    CPP   |    Requires work    |
