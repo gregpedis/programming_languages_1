@@ -9,6 +9,9 @@
 #include <string>
 
 
+#include <algorithm>
+
+
 
 //
 //                                                                                                                                                                                                        dddddddd
@@ -39,11 +42,23 @@
 
 
 // simple container struct for the file parameters.
-struct InputVals {
-	int hospital_count;
-	std::vector<int> days;
+class InputVals 
+{
+  public:
+	int hospital_count() const { return m_hospital_count; }
 
-	InputVals() { hospital_count = 0; };
+	std::vector<int> days() const { return m_days; }
+
+  InputVals(int count, std::vector<int> days) :
+    m_hospital_count(count),
+    m_days(std::move(days))
+  {
+  }
+
+  private:
+  int m_hospital_count;
+  std::vector<int> m_days;
+
 };
 
 // Function declarations.
@@ -82,8 +97,7 @@ int main(int argc, char** argv)
 /// </summary>
 InputVals ParseInputFile(std::string filename)
 {
-	InputVals inputVals;
-
+  std::vector<int> days;
 	std::string line1, line2;
 	std::string delim = " ";
 	std::string token;
@@ -94,16 +108,17 @@ InputVals ParseInputFile(std::string filename)
 	std::getline(inputFile, line2);
 
 	pos = line1.find(delim);
-	inputVals.hospital_count = std::stoi(line1.substr(pos));
 
 	while ((pos = line2.find(delim)) != std::string::npos)
 	{
 		token = line2.substr(0, pos);
-		inputVals.days.push_back(std::stoi(token));
+		days.push_back(std::stoi(token));
 		line2.erase(0, pos + delim.length());
 	}
 
-	inputFile.close();
+  InputVals inputVals(
+      std::stoi(line1.substr(pos)),
+      days);
 
 	//	inputVals.days = { 42,-10, 8 };
 	//	inputVals.days = { 42, -10, 8, 1, 11, -6, -12, 16, -15, -11, 13 };
@@ -123,11 +138,23 @@ std::vector<int> SimplifyInput(InputVals& inputVals)
 {
 	std::vector<int> simplified;
 
-	for (size_t i = 0; i < inputVals.days.size(); i++)
-	{
-		int newValue = -1 * (inputVals.days[i] + inputVals.hospital_count);
-		simplified.push_back(newValue);
-	}
+  // Left here for the for(:) thingie
+  //
+  // for(auto day : inputVals.days())
+  // {
+    // int newValue = -1 * (day + inputVals.hospital_count());
+		// simplified.push_back(newValue);
+  // }
+
+  auto days = inputVals.days(); //capture so it's less fugly
+  auto hospitals = inputVals.hospital_count();
+  std::transform(
+      days.begin(), 
+      days.end(), 
+      std::back_inserter(simplified),
+      [hospitals](int day) { return -1 * (day + hospitals); }
+  ); // how about that Ocaml?
+
 	return simplified;
 }
 
