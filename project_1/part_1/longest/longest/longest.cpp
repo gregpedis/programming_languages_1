@@ -41,6 +41,56 @@
 
 
 
+// container adapter
+template<
+  class T,
+  class Container = std::vector<T>
+> class NormalizedInput
+{
+
+  class ValueProxy 
+  {
+    public:
+
+      ValueProxy(Container& container, size_t i) :
+        m_container(container),
+        m_index(i)
+    {
+    }
+
+      operator T() const //for rvalue cases
+      {
+        return m_container[m_index];
+      }
+
+      ValueProxy& operator=(T value) //for lvalue cases
+      {
+        m_container[m_index] = value;
+        return *this;
+      }
+
+
+    private:
+      size_t m_index;
+      Container& m_container;
+  };
+
+  explicit NormalizedInput(Container container) :
+    m_container(container)
+  {
+  }
+
+  ValueProxy operator[](int i)
+  {
+    return ValueProxy(m_container, i);
+  }
+
+
+  private:
+    Container m_container;
+};
+
+
 // simple container struct for the file parameters.
 class InputVals 
 {
