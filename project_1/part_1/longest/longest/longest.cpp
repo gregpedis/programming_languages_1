@@ -8,6 +8,36 @@
 #include <array>
 #include <string>
 
+
+
+//
+//                                                                                                                                                                                                        dddddddd
+//  PPPPPPPPPPPPPPPPP                                                                                                                        ffffffffffffffff       IIIIIIIIII                            d::::::d                                            tttt
+//  P::::::::::::::::P                                                                                                                      f::::::::::::::::f      I::::::::I                            d::::::d                                         ttt:::t
+//  P::::::PPPPPP:::::P                                                                                                                    f::::::::::::::::::f     I::::::::I                            d::::::d                                         t:::::t
+//  PP:::::P     P:::::P                                                                                                                   f::::::fffffff:::::f     II::::::II                            d:::::d                                          t:::::t
+//    P::::P     P:::::P  ooooooooooo wwwwwww           wwwww           wwwwwww eeeeeeeeeeee    rrrrr   rrrrrrrrr           ooooooooooo    f:::::f       ffffff       I::::Innnn  nnnnnnnn        ddddddddd:::::d uuuuuu    uuuuuu      ssssssssss   ttttttt:::::ttttttt   rrrrr   rrrrrrrrryyyyyyy           yyyyyyy
+//    P::::P     P:::::Poo:::::::::::oow:::::w         w:::::w         w:::::wee::::::::::::ee  r::::rrr:::::::::r        oo:::::::::::oo  f:::::f                    I::::In:::nn::::::::nn    dd::::::::::::::d u::::u    u::::u    ss::::::::::s  t:::::::::::::::::t   r::::rrr:::::::::ry:::::y         y:::::y
+//    P::::PPPPPP:::::Po:::::::::::::::ow:::::w       w:::::::w       w:::::we::::::eeeee:::::eer:::::::::::::::::r      o:::::::::::::::of:::::::ffffff              I::::In::::::::::::::nn  d::::::::::::::::d u::::u    u::::u  ss:::::::::::::s t:::::::::::::::::t   r:::::::::::::::::ry:::::y       y:::::y
+//    P:::::::::::::PP o:::::ooooo:::::o w:::::w     w:::::::::w     w:::::we::::::e     e:::::err::::::rrrrr::::::r     o:::::ooooo:::::of::::::::::::f              I::::Inn:::::::::::::::nd:::::::ddddd:::::d u::::u    u::::u  s::::::ssss:::::stttttt:::::::tttttt   rr::::::rrrrr::::::ry:::::y     y:::::y
+//    P::::PPPPPPPPP   o::::o     o::::o  w:::::w   w:::::w:::::w   w:::::w e:::::::eeeee::::::e r:::::r     r:::::r     o::::o     o::::of::::::::::::f              I::::I  n:::::nnnn:::::nd::::::d    d:::::d u::::u    u::::u   s:::::s  ssssss       t:::::t          r:::::r     r:::::r y:::::y   y:::::y
+//    P::::P           o::::o     o::::o   w:::::w w:::::w w:::::w w:::::w  e:::::::::::::::::e  r:::::r     rrrrrrr     o::::o     o::::of:::::::ffffff              I::::I  n::::n    n::::nd:::::d     d:::::d u::::u    u::::u     s::::::s            t:::::t          r:::::r     rrrrrrr  y:::::y y:::::y
+//    P::::P           o::::o     o::::o    w:::::w:::::w   w:::::w:::::w   e::::::eeeeeeeeeee   r:::::r                 o::::o     o::::o f:::::f                    I::::I  n::::n    n::::nd:::::d     d:::::d u::::u    u::::u        s::::::s         t:::::t          r:::::r               y:::::y:::::y
+//    P::::P           o::::o     o::::o     w:::::::::w     w:::::::::w    e:::::::e            r:::::r                 o::::o     o::::o f:::::f                    I::::I  n::::n    n::::nd:::::d     d:::::d u:::::uuuu:::::u  ssssss   s:::::s       t:::::t    ttttttr:::::r                y:::::::::y
+//  PP::::::PP         o:::::ooooo:::::o      w:::::::w       w:::::::w     e::::::::e           r:::::r                 o:::::ooooo:::::of:::::::f                 II::::::IIn::::n    n::::nd::::::ddddd::::::ddu:::::::::::::::uus:::::ssss::::::s      t::::::tttt:::::tr:::::r                 y:::::::y
+//  P::::::::P         o:::::::::::::::o       w:::::w         w:::::w       e::::::::eeeeeeee   r:::::r                 o:::::::::::::::of:::::::f                 I::::::::In::::n    n::::n d:::::::::::::::::d u:::::::::::::::us::::::::::::::s       tt::::::::::::::tr:::::r                  y:::::y
+//  P::::::::P          oo:::::::::::oo         w:::w           w:::w         ee:::::::::::::e   r:::::r                  oo:::::::::::oo f:::::::f                 I::::::::In::::n    n::::n  d:::::::::ddd::::d  uu::::::::uu:::u s:::::::::::ss          tt:::::::::::ttr:::::r                 y:::::y
+//  PPPPPPPPPP            ooooooooooo            www             www            eeeeeeeeeeeeee   rrrrrrr                    ooooooooooo   fffffffff                 IIIIIIIIIInnnnnn    nnnnnn   ddddddddd   ddddd    uuuuuuuu  uuuu  sssssssssss              ttttttttttt  rrrrrrr                y:::::y
+//                                                                                                                                                                                                                                                                                                y:::::y
+//                                                                                                                                                                                                                                                                                               y:::::y
+//                                                                                                                                                                                                                                                                                              y:::::y
+//                                                                                                                                                                                                                                                                                             y:::::y
+//                                                                                                                                                                                                                                                                                            yyyyyyy
+//
+//
+
+
+
 // simple container struct for the file parameters.
 struct InputVals {
 	int hospital_count;
