@@ -8,12 +8,107 @@
 #include <array>
 #include <string>
 
-// simple container struct for the file parameters.
-struct InputVals {
-	int hospital_count;
-	std::vector<int> days;
 
-	InputVals() { hospital_count = 0; };
+#include <algorithm>
+
+
+
+//
+//                                                                                                                                                                                                        dddddddd
+//  PPPPPPPPPPPPPPPPP                                                                                                                        ffffffffffffffff       IIIIIIIIII                            d::::::d                                            tttt
+//  P::::::::::::::::P                                                                                                                      f::::::::::::::::f      I::::::::I                            d::::::d                                         ttt:::t
+//  P::::::PPPPPP:::::P                                                                                                                    f::::::::::::::::::f     I::::::::I                            d::::::d                                         t:::::t
+//  PP:::::P     P:::::P                                                                                                                   f::::::fffffff:::::f     II::::::II                            d:::::d                                          t:::::t
+//    P::::P     P:::::P  ooooooooooo wwwwwww           wwwww           wwwwwww eeeeeeeeeeee    rrrrr   rrrrrrrrr           ooooooooooo    f:::::f       ffffff       I::::Innnn  nnnnnnnn        ddddddddd:::::d uuuuuu    uuuuuu      ssssssssss   ttttttt:::::ttttttt   rrrrr   rrrrrrrrryyyyyyy           yyyyyyy
+//    P::::P     P:::::Poo:::::::::::oow:::::w         w:::::w         w:::::wee::::::::::::ee  r::::rrr:::::::::r        oo:::::::::::oo  f:::::f                    I::::In:::nn::::::::nn    dd::::::::::::::d u::::u    u::::u    ss::::::::::s  t:::::::::::::::::t   r::::rrr:::::::::ry:::::y         y:::::y
+//    P::::PPPPPP:::::Po:::::::::::::::ow:::::w       w:::::::w       w:::::we::::::eeeee:::::eer:::::::::::::::::r      o:::::::::::::::of:::::::ffffff              I::::In::::::::::::::nn  d::::::::::::::::d u::::u    u::::u  ss:::::::::::::s t:::::::::::::::::t   r:::::::::::::::::ry:::::y       y:::::y
+//    P:::::::::::::PP o:::::ooooo:::::o w:::::w     w:::::::::w     w:::::we::::::e     e:::::err::::::rrrrr::::::r     o:::::ooooo:::::of::::::::::::f              I::::Inn:::::::::::::::nd:::::::ddddd:::::d u::::u    u::::u  s::::::ssss:::::stttttt:::::::tttttt   rr::::::rrrrr::::::ry:::::y     y:::::y
+//    P::::PPPPPPPPP   o::::o     o::::o  w:::::w   w:::::w:::::w   w:::::w e:::::::eeeee::::::e r:::::r     r:::::r     o::::o     o::::of::::::::::::f              I::::I  n:::::nnnn:::::nd::::::d    d:::::d u::::u    u::::u   s:::::s  ssssss       t:::::t          r:::::r     r:::::r y:::::y   y:::::y
+//    P::::P           o::::o     o::::o   w:::::w w:::::w w:::::w w:::::w  e:::::::::::::::::e  r:::::r     rrrrrrr     o::::o     o::::of:::::::ffffff              I::::I  n::::n    n::::nd:::::d     d:::::d u::::u    u::::u     s::::::s            t:::::t          r:::::r     rrrrrrr  y:::::y y:::::y
+//    P::::P           o::::o     o::::o    w:::::w:::::w   w:::::w:::::w   e::::::eeeeeeeeeee   r:::::r                 o::::o     o::::o f:::::f                    I::::I  n::::n    n::::nd:::::d     d:::::d u::::u    u::::u        s::::::s         t:::::t          r:::::r               y:::::y:::::y
+//    P::::P           o::::o     o::::o     w:::::::::w     w:::::::::w    e:::::::e            r:::::r                 o::::o     o::::o f:::::f                    I::::I  n::::n    n::::nd:::::d     d:::::d u:::::uuuu:::::u  ssssss   s:::::s       t:::::t    ttttttr:::::r                y:::::::::y
+//  PP::::::PP         o:::::ooooo:::::o      w:::::::w       w:::::::w     e::::::::e           r:::::r                 o:::::ooooo:::::of:::::::f                 II::::::IIn::::n    n::::nd::::::ddddd::::::ddu:::::::::::::::uus:::::ssss::::::s      t::::::tttt:::::tr:::::r                 y:::::::y
+//  P::::::::P         o:::::::::::::::o       w:::::w         w:::::w       e::::::::eeeeeeee   r:::::r                 o:::::::::::::::of:::::::f                 I::::::::In::::n    n::::n d:::::::::::::::::d u:::::::::::::::us::::::::::::::s       tt::::::::::::::tr:::::r                  y:::::y
+//  P::::::::P          oo:::::::::::oo         w:::w           w:::w         ee:::::::::::::e   r:::::r                  oo:::::::::::oo f:::::::f                 I::::::::In::::n    n::::n  d:::::::::ddd::::d  uu::::::::uu:::u s:::::::::::ss          tt:::::::::::ttr:::::r                 y:::::y
+//  PPPPPPPPPP            ooooooooooo            www             www            eeeeeeeeeeeeee   rrrrrrr                    ooooooooooo   fffffffff                 IIIIIIIIIInnnnnn    nnnnnn   ddddddddd   ddddd    uuuuuuuu  uuuu  sssssssssss              ttttttttttt  rrrrrrr                y:::::y
+//                                                                                                                                                                                                                                                                                                y:::::y
+//                                                                                                                                                                                                                                                                                               y:::::y
+//                                                                                                                                                                                                                                                                                              y:::::y
+//                                                                                                                                                                                                                                                                                             y:::::y
+//                                                                                                                                                                                                                                                                                            yyyyyyy
+//
+//
+
+
+
+// container adapter
+template<
+  class T,
+  class Container = std::vector<T>
+> class NormalizedInput
+{
+
+  class ValueProxy 
+  {
+    public:
+
+      ValueProxy(Container& container, size_t i) :
+        m_container(container),
+        m_index(i)
+    {
+    }
+
+      operator T() const //for rvalue cases
+      {
+        return m_container[m_index];
+      }
+
+      ValueProxy& operator=(T value) //for lvalue cases
+      {
+        m_container[m_index] = value;
+        return *this;
+      }
+
+
+    private:
+      size_t m_index;
+      Container& m_container;
+  };
+
+  explicit NormalizedInput(Container container) :
+    m_container(container)
+  {
+  }
+
+  ValueProxy operator[](int i)
+  {
+    return ValueProxy(m_container, i);
+  }
+
+
+  private:
+    Container m_container;
+};
+
+
+// simple container struct for the file parameters.
+class InputVals 
+{
+  public:
+	int hospital_count() const { return m_hospital_count; }
+
+	std::vector<int> days() const { return m_days; }
+
+  InputVals(int count, std::vector<int> days) :
+    m_hospital_count(count),
+    m_days(std::move(days))
+  {
+  }
+
+  private:
+  int m_hospital_count;
+  std::vector<int> m_days;
+
 };
 
 // Function declarations.
@@ -52,8 +147,7 @@ int main(int argc, char** argv)
 /// </summary>
 InputVals ParseInputFile(std::string filename)
 {
-	InputVals inputVals;
-
+  std::vector<int> days;
 	std::string line1, line2;
 	std::string delim = " ";
 	std::string token;
@@ -64,16 +158,17 @@ InputVals ParseInputFile(std::string filename)
 	std::getline(inputFile, line2);
 
 	pos = line1.find(delim);
-	inputVals.hospital_count = std::stoi(line1.substr(pos));
 
 	while ((pos = line2.find(delim)) != std::string::npos)
 	{
 		token = line2.substr(0, pos);
-		inputVals.days.push_back(std::stoi(token));
+		days.push_back(std::stoi(token));
 		line2.erase(0, pos + delim.length());
 	}
 
-	inputFile.close();
+  InputVals inputVals(
+      std::stoi(line1.substr(pos)),
+      days);
 
 	//	inputVals.days = { 42,-10, 8 };
 	//	inputVals.days = { 42, -10, 8, 1, 11, -6, -12, 16, -15, -11, 13 };
@@ -93,11 +188,23 @@ std::vector<int> SimplifyInput(InputVals& inputVals)
 {
 	std::vector<int> simplified;
 
-	for (size_t i = 0; i < inputVals.days.size(); i++)
-	{
-		int newValue = -1 * (inputVals.days[i] + inputVals.hospital_count);
-		simplified.push_back(newValue);
-	}
+  // Left here for the for(:) thingie
+  //
+  // for(auto day : inputVals.days())
+  // {
+    // int newValue = -1 * (day + inputVals.hospital_count());
+		// simplified.push_back(newValue);
+  // }
+
+  auto days = inputVals.days(); //capture so it's less fugly
+  auto hospitals = inputVals.hospital_count();
+  std::transform(
+      days.begin(), 
+      days.end(), 
+      std::back_inserter(simplified),
+      [hospitals](int day) { return -1 * (day + hospitals); }
+  ); // how about that Ocaml?
+
 	return simplified;
 }
 
