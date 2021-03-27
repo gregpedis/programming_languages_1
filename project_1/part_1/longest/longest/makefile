@@ -17,3 +17,4 @@ clean:
 
 run:
 	./$(TARGET) data.txt
+
