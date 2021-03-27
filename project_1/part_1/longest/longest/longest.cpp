@@ -29,7 +29,7 @@ public:
 };
 
 // Function declarations.
-#pragma region DECLARATIONS 
+// #pragma region DECLARATIONS 
 
 InputVals ParseInputFile(const string& filename);
 vector<int> SimplifyInput(const InputVals& inputVals);
@@ -38,7 +38,7 @@ vector<int> GeneratePrefixes(const vector<int>& values);
 int GetMaximumLength(const vector<int>& prefixes);
 int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& importantIndexes, const int& rightPrefix);
 
-#pragma endregion
+// #pragma endregion
 
 
 // Execution entrypoint.
