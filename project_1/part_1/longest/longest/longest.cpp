@@ -5,26 +5,38 @@
 #include <fstream>
 
 #include <vector>
-#include <array>
 #include <string>
+
+using std::vector;
+using std::string;
+using std::pair;
 
 // simple container struct for the file parameters.
 struct InputVals {
-	int hospital_count;
-	std::vector<int> days;
 
-	InputVals() { hospital_count = 0; };
+private:
+	int m_hospital_count;
+	vector<int> m_days;
+
+public:
+	int hospital_count() const { return m_hospital_count; }
+	vector<int> days() const { return m_days; }
+
+	InputVals(int hc, vector<int> ds)
+		: m_hospital_count(hc), m_days(std::move(ds))
+	{
+	}
 };
 
 // Function declarations.
 #pragma region DECLARATIONS 
 
-InputVals ParseInputFile(std::string filename);
-std::vector<int> SimplifyInput(InputVals& inputVals);
-std::vector<int> GeneratePrefixes(std::vector<int>& values);
+InputVals ParseInputFile(const string& filename);
+vector<int> SimplifyInput(const InputVals& inputVals);
+vector<int> GeneratePrefixes(const vector<int>& values);
 
-int GetMaximumLength(std::vector<int>& prefixes);
-int FindLocalOptimalLeftPrefix(std::vector<std::pair<int, int>>& importantIndexes, int rightPrefix);
+int GetMaximumLength(const vector<int>& prefixes);
+int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& importantIndexes, const int& rightPrefix);
 
 #pragma endregion
 
@@ -35,28 +47,27 @@ int FindLocalOptimalLeftPrefix(std::vector<std::pair<int, int>>& importantIndexe
 int main(int argc, char** argv)
 {
 	// Get the filename from the first command-line argument and parse its contents.
-	InputVals inputVals = ParseInputFile(std::string(argv[1]));
+	auto inputVals = ParseInputFile(string(argv[1]));
 	// Convert the problem into a simpler one.
-	std::vector<int> values = SimplifyInput(inputVals);
+	auto values = SimplifyInput(inputVals);
 
 	// Generate the prefix array.
-	std::vector<int> prefixes = GeneratePrefixes(values);
+	auto prefixes = GeneratePrefixes(values);
 	// Solve the algorithm.
-	int result = GetMaximumLength(prefixes);
+	auto result = GetMaximumLength(prefixes);
 	// $$$
 	std::cout << result;
+	std::cout << std::endl;
 }
 
 /// <summary>
 /// Read some data from a file.
 /// </summary>
-InputVals ParseInputFile(std::string filename)
+InputVals ParseInputFile(const string& filename)
 {
-	InputVals inputVals;
-
-	std::string line1, line2;
-	std::string delim = " ";
-	std::string token;
+	string line1, line2;
+	string delim = " ";
+	string token;
 	size_t pos = 0;
 
 	std::ifstream inputFile(filename); //implicit constructor call.
@@ -64,20 +75,23 @@ InputVals ParseInputFile(std::string filename)
 	std::getline(inputFile, line2);
 
 	pos = line1.find(delim);
-	inputVals.hospital_count = std::stoi(line1.substr(pos));
+	auto hc = std::stoi(line1.substr(pos)); // get the hospital count.
 
-	while ((pos = line2.find(delim)) != std::string::npos)
+	vector<int> days;
+	while ((pos = line2.find(delim)) != string::npos)
 	{
 		token = line2.substr(0, pos);
-		inputVals.days.push_back(std::stoi(token));
+		days.push_back(std::stoi(token));
 		line2.erase(0, pos + delim.length());
 	}
 
+	// most likely not needed, since the function's destructor calls this implicitly.
 	inputFile.close();
 
-	//	inputVals.days = { 42,-10, 8 };
-	//	inputVals.days = { 42, -10, 8, 1, 11, -6, -12, 16, -15, -11, 13 };
-	return inputVals;
+	//days = { 42,-10, 8 };
+	//days = { 42, -10, 8, 1, 11, -6, -12, 16, -15, -11, 13 };
+	InputVals result(hc, days);
+	return result;
 }
 
 /// <summary>
@@ -89,13 +103,13 @@ InputVals ParseInputFile(std::string filename)
 /// which in turn means "add K to every M1, M2... and invert the sign:
 /// [M1,M2, ...] ---> [-1 *(M1+K), -1*(M2+K), ...]
 /// </summary>
-std::vector<int> SimplifyInput(InputVals& inputVals)
+vector<int> SimplifyInput(const InputVals& inputVals)
 {
-	std::vector<int> simplified;
+	vector<int> simplified;
 
-	for (size_t i = 0; i < inputVals.days.size(); i++)
+	for (size_t i = 0; i < inputVals.days().size(); i++)
 	{
-		int newValue = -1 * (inputVals.days[i] + inputVals.hospital_count);
+		int newValue = -1 * (inputVals.days()[i] + inputVals.hospital_count());
 		simplified.push_back(newValue);
 	}
 	return simplified;
@@ -106,9 +120,9 @@ std::vector<int> SimplifyInput(InputVals& inputVals)
 /// In a normal prefix tree, for example Pn - P0 is the sum of n-1 elements, 
 /// whereas the result needed should be n.
 /// </summary>
-std::vector<int> GeneratePrefixes(std::vector<int>& values)
+vector<int> GeneratePrefixes(const vector<int>& values)
 {
-	std::vector<int> prefixes = { 0 };
+	vector<int> prefixes = { 0 };
 	//prefixes.push_back(values[0]);
 
 	for (size_t i = 0; i < values.size(); i++)
@@ -129,17 +143,17 @@ std::vector<int> GeneratePrefixes(std::vector<int>& values)
 /// After that a binary search can be executed [since important index array is sorted, decreasing] 
 /// to find the left-most viable index, which will be optimal [since important index array is sorted, again].
 /// </summary>
-int GetMaximumLength(std::vector<int>& prefixes)
+int GetMaximumLength(const vector<int>& prefixes)
 {
 	int ans = 0;
 	//initialize the first prefix as it is a valid important index by definition.
-	std::vector<std::pair<int, int>> validLeftPrefixes = { {0,prefixes[0]} };
+	vector<pair<int, int>> validLeftPrefixes = { {0,prefixes[0]} };
 
 	for (size_t i = 0; i < prefixes.size(); i++)
 	{
 		if (prefixes[i] - validLeftPrefixes.back().second >= 0)
 		{
-			int j = FindLocalOptimalLeftPrefix(validLeftPrefixes, prefixes[i]);
+			auto j = FindLocalOptimalLeftPrefix(validLeftPrefixes, prefixes[i]);
 			ans = std::max(ans, int(i - j));
 		}
 
@@ -155,7 +169,7 @@ int GetMaximumLength(std::vector<int>& prefixes)
 /// <summary>
 /// The binary search of the important index array.
 /// </summary>
-int FindLocalOptimalLeftPrefix(std::vector<std::pair<int, int>>& leftPrefixes, int rightPrefix)
+int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& leftPrefixes, const int& rightPrefix)
 {
 	// Starting and ending index of search space.
 	int l = 0;
