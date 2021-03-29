@@ -33,7 +33,7 @@ public:
 	size_t size_y() const { return m_size_y; }
 	vector<vector<RoomDirection>> rooms() const { return m_rooms; }
 
-	InputVals(int x, int y, vector<vector<RoomDirection>> rooms)
+	InputVals(size_t x, size_t y, vector<vector<RoomDirection>> rooms)
 		: m_size_x(x), m_size_y(y), m_rooms(std::move(rooms))
 	{
 	}
@@ -72,8 +72,8 @@ InputVals ParseInputFile(const string& filename)
 	string headerline;
 	std::getline(inputFile, headerline);
 	auto pos = headerline.find(' ');
-	auto size_x = std::stoi(headerline.substr(0, pos));
-	auto size_y = std::stoi(headerline.substr(pos + 1));
+	size_t size_x = std::stoi(headerline.substr(0, pos));
+	size_t size_y = std::stoi(headerline.substr(pos + 1));
 
 	vector<vector<RoomDirection>> rooms;
 	string line;
@@ -110,6 +110,7 @@ RoomDirection GetRoomValue(const char& room)
 	case 'L':
 		return RoomDirection::Left;
 	case 'R':
+  default:
 		return RoomDirection::Right;
 	}
 }
