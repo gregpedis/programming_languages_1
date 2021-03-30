@@ -8,17 +8,20 @@
 #include <array>
 #include <string>
 
+
 using std::vector;
 using std::string;
-using std::pair;
+
 
 // easier to compare than chars.
 enum class RoomDirection { Up, Down, Left, Right };
 
 // easier way of reading the coordinates than a pair.
 struct RoomPosition {
+public:
 	size_t x, y;
-	RoomPosition(size_t x, size_t y) : x(x), y(y) {}
+
+	RoomPosition(size_t x, size_t y) : x(x), y(y) { }
 };
 
 // simple container struct for the file parameters.
@@ -35,9 +38,9 @@ public:
 
 	InputVals(size_t x, size_t y, vector<vector<RoomDirection>> rooms)
 		: m_size_x(x), m_size_y(y), m_rooms(std::move(rooms))
-	{
-	}
+	{ }
 };
+
 
 // Function declarations.
 // #pragma region DECLARATIONS 
@@ -46,10 +49,11 @@ InputVals ParseInputFile(const string& filename);
 RoomDirection GetRoomValue(const char& room);
 
 int GetInvalidRoomCount(const InputVals& inputVals);
-vector<RoomPosition> GetValidRimRooms(const InputVals& inputVals);
+vector<RoomPosition> GetValidPerimeterRooms(const InputVals& inputVals);
 int GetValidRoomCountByRoom(const InputVals& inputVals, const RoomPosition& position);
 
 // #pragma endregion
+
 
 // Execution entrypoint.
 int main(int argc, char** argv)
@@ -65,6 +69,9 @@ int main(int argc, char** argv)
 	std::cout << std::endl;
 }
 
+/// <summary>
+/// Read some data from a file.
+/// </summary>
 InputVals ParseInputFile(const string& filename)
 {
 	std::ifstream inputFile(filename); //implicit constructor call.
@@ -72,12 +79,14 @@ InputVals ParseInputFile(const string& filename)
 	string headerline;
 	std::getline(inputFile, headerline);
 	auto pos = headerline.find(' ');
-	size_t size_x = std::stoi(headerline.substr(0, pos));
-	size_t size_y = std::stoi(headerline.substr(pos + 1));
+	size_t size_x = std::stoi(headerline.substr(0, pos));	// read up until delimiter, convert to int.
+	size_t size_y = std::stoi(headerline.substr(pos + 1));	// read remaining string, convert to int.
 
 	vector<vector<RoomDirection>> rooms;
 	string line;
 
+	// read all room positions and 
+	// convert their value to an instance of the enum RoomDirection.
 	for (size_t i = 0; i < size_x; ++i)
 	{
 		std::getline(inputFile, line);
@@ -99,6 +108,9 @@ InputVals ParseInputFile(const string& filename)
 	return result;
 }
 
+/// <summary>
+/// Simple character to RoomDirection instance converter.
+/// </summary>
 RoomDirection GetRoomValue(const char& room)
 {
 	switch (room)
@@ -110,14 +122,20 @@ RoomDirection GetRoomValue(const char& room)
 	case 'L':
 		return RoomDirection::Left;
 	case 'R':
-  default:
+	default: //not necessary in the usecase, but c++11 compilation throws a warning.
 		return RoomDirection::Right;
 	}
 }
 
+/// <summary>
+/// The actual algorithm solver.
+/// It starts by finding the valid perimeter rooms(first and last row, first and last column).
+/// Then foreach one of them it executes a Depth-First Traversal to find all the valid rooms.
+/// The solution is [AllRooms - ValidRooms], since the question is the number of invalid rooms.
+/// </summary>
 int GetInvalidRoomCount(const InputVals& inputVals)
 {
-	const auto validRimRooms = GetValidRimRooms(inputVals);
+	const auto validRimRooms = GetValidPerimeterRooms(inputVals);
 	int count = validRimRooms.size();
 
 	for (auto& room : validRimRooms)
@@ -128,7 +146,13 @@ int GetInvalidRoomCount(const InputVals& inputVals)
 	return inputVals.size_x() * inputVals.size_y() - count;
 }
 
-vector<RoomPosition> GetValidRimRooms(const InputVals& inputVals)
+/// <summary>
+/// Finds the valid rooms on the perimeter, 
+/// meaning the rooms of the first and last row,
+/// as well as the rooms of the first and last column
+/// which direction is looking "outside" the maze.
+/// </summary>
+vector<RoomPosition> GetValidPerimeterRooms(const InputVals& inputVals)
 {
 	vector<RoomPosition> validRimRooms;
 
@@ -168,7 +192,12 @@ vector<RoomPosition> GetValidRimRooms(const InputVals& inputVals)
 	return validRimRooms;
 }
 
-int GetValidRoomCountByRoom(const InputVals& inputVals, const RoomPosition& position)
+/// <summary>
+/// Finds the valid rooms ending in room [position],
+/// by executing a relative Depth-First Traversal.
+/// </summary>
+int GetValidRoomCountByRoom(
+	const InputVals& inputVals, const RoomPosition& position)
 {
 	int count = 0;
 
