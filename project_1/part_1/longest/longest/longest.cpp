@@ -15,9 +15,10 @@ using std::string;
 // simple container for an important index.
 struct ImportantIndex {
 public:
-	int index, prefix;
+	size_t index;
+  int prefix;
 
-	ImportantIndex(int idx, int prfx) : index(idx), prefix(prfx) { }
+	ImportantIndex(size_t idx, int prfx) : index(idx), prefix(prfx) { }
 };
 
 // simple container struct for the file parameters.
