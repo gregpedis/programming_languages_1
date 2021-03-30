@@ -10,13 +10,17 @@ Some generic help with git commands.
 
 - git **checkout** -> Checkouts files, removing the changes since HEAD, or jumps to another branch.
 
-` git checkout -- somefile `, ` git checkout my-branch-name `
+` git checkout -- somefile `
+
+` git checkout my-branch-name `
 
 ## Pushing
 
 - git **add** -> Adds the files chosen or . for everything to the changes-to-be-commited.
 
-` git add . `, ` git add somefile.txt`
+` git add . `
+
+` git add somefile.txt`
 
 - git **commit** -> Commits the messages on top of current *local* branch.
 
