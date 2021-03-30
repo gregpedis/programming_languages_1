@@ -7,9 +7,18 @@
 #include <vector>
 #include <string>
 
+
 using std::vector;
 using std::string;
-using std::pair;
+
+
+// simple container for an important index.
+struct ImportantIndex {
+public:
+	int index, prefix;
+
+	ImportantIndex(int idx, int prfx) : index(idx), prefix(prfx) { }
+};
 
 // simple container struct for the file parameters.
 struct InputVals {
@@ -28,6 +37,7 @@ public:
 	}
 };
 
+
 // Function declarations.
 // #pragma region DECLARATIONS 
 
@@ -36,7 +46,7 @@ vector<int> SimplifyInput(const InputVals& inputVals);
 vector<int> GeneratePrefixes(const vector<int>& values);
 
 int GetMaximumLength(const vector<int>& prefixes);
-int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& importantIndexes, const int& rightPrefix);
+int FindLocalOptimalLeftPrefix(const vector<ImportantIndex>& importantIndexes, const int& rightPrefix);
 
 // #pragma endregion
 
@@ -55,6 +65,7 @@ int main(int argc, char** argv)
 	auto prefixes = GeneratePrefixes(values);
 	// Solve the algorithm.
 	auto result = GetMaximumLength(prefixes);
+
 	// $$$
 	std::cout << result;
 	std::cout << std::endl;
@@ -112,6 +123,7 @@ vector<int> SimplifyInput(const InputVals& inputVals)
 		int newValue = -1 * (inputVals.days()[i] + inputVals.hospital_count());
 		simplified.push_back(newValue);
 	}
+
 	return simplified;
 }
 
@@ -123,12 +135,12 @@ vector<int> SimplifyInput(const InputVals& inputVals)
 vector<int> GeneratePrefixes(const vector<int>& values)
 {
 	vector<int> prefixes = { 0 };
-	//prefixes.push_back(values[0]);
 
 	for (size_t i = 0; i < values.size(); i++)
 	{
 		prefixes.push_back(prefixes[i] + values[i]);
 	}
+
 	return prefixes;
 }
 
@@ -147,17 +159,17 @@ int GetMaximumLength(const vector<int>& prefixes)
 {
 	int ans = 0;
 	//initialize the first prefix as it is a valid important index by definition.
-	vector<pair<int, int>> validLeftPrefixes = { {0,prefixes[0]} };
+	vector<ImportantIndex> validLeftPrefixes = { ImportantIndex(0, prefixes[0]) };
 
 	for (size_t i = 0; i < prefixes.size(); i++)
 	{
-		if (prefixes[i] - validLeftPrefixes.back().second >= 0)
+		if (prefixes[i] - validLeftPrefixes.back().prefix >= 0)
 		{
 			auto j = FindLocalOptimalLeftPrefix(validLeftPrefixes, prefixes[i]);
 			ans = std::max(ans, int(i - j));
 		}
 
-		if (prefixes[i] < validLeftPrefixes.back().second)
+		if (prefixes[i] < validLeftPrefixes.back().prefix)
 		{
 			validLeftPrefixes.push_back({ i, prefixes[i] });
 		}
@@ -169,7 +181,8 @@ int GetMaximumLength(const vector<int>& prefixes)
 /// <summary>
 /// The binary search of the important index array.
 /// </summary>
-int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& leftPrefixes, const int& rightPrefix)
+int FindLocalOptimalLeftPrefix(
+	const vector<ImportantIndex>& leftPrefixes, const int& rightPrefix)
 {
 	// Starting and ending index of search space.
 	int l = 0;
@@ -177,7 +190,7 @@ int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& leftPrefixes, const
 	int m;
 
 	// To store required index value.
-	int ans = leftPrefixes[h].first;
+	int ans = leftPrefixes[h].index;
 
 	//Binary search loop to find the left-most valid prefix.
 	while (l < h) {
@@ -185,8 +198,8 @@ int FindLocalOptimalLeftPrefix(const vector<pair<int, int>>& leftPrefixes, const
 		// to avoid a possible integer overflow.
 		// ref https://en.wikipedia.org/wiki/Binary_search_algorithm#Implementation_issues
 		m = l + (h - l) / 2;
-		if (rightPrefix - leftPrefixes[m].second >= 0) {
-			ans = leftPrefixes[m].first;
+		if (rightPrefix - leftPrefixes[m].prefix >= 0) {
+			ans = leftPrefixes[m].index;
 			h = m - 1;
 		}
 		else
