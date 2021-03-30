@@ -16,7 +16,7 @@ using std::string;
 struct ImportantIndex {
 public:
 	size_t index;
-  int prefix;
+	int prefix;
 
 	ImportantIndex(size_t idx, int prfx) : index(idx), prefix(prfx) { }
 };

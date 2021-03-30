@@ -8,7 +8,7 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 |:-------:|:----:|:--------:|:-------------------:|
 |    1    |   1  |    CPP   |     **Finished**    |
 |    1    |   1  |   OCaml  |    Requires work    |
-|    1    |   2  |    CPP   |    Requires work    |
+|    1    |   2  |    CPP   |     **Finished**    |
 |    1    |   2  |   OCaml  |    Requires work    |
 
 
@@ -18,4 +18,7 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 - Added project 1 part 1 OCaml *placeholder*.
 - Added project 1 part 2 CPP *placeholder*.
 - Added project 2 part 2 OCaml *placeholder*.
+
+### 30/3/2021
+- Added project 1 part 2 CPP **implementation**.
 
