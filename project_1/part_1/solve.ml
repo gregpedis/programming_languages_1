@@ -1,3 +1,4 @@
 let a = 5
 
-b = a+2
+solve x = x+1
+
