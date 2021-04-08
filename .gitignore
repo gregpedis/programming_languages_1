@@ -37,6 +37,7 @@
 # Directories
 .vs/
 Debug/
+_build/
 
 # Executables
 longest

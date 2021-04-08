@@ -2,10 +2,10 @@
 # OCAMLPARAM: unset
 # Workspace root:
 # /home/pi/ntua/programming_languages_1/project_1/part_1/test_bed
-$ /usr/bin/nproc > /tmp/dune2d23ec.output 2> /dev/null
+$ /usr/bin/nproc > /tmp/dune209628.output 2> /dev/null
 # Auto-detected concurrency: 4
 # disable binary cache
-$ /home/pi/.opam/4.11.1/bin/ocamlc.opt -config > /tmp/dunebae1da.output
+$ /home/pi/.opam/4.11.1/bin/ocamlc.opt -config > /tmp/dune8e0ae6.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -114,3 +114,11 @@ $ /home/pi/.opam/4.11.1/bin/ocamlc.opt -config > /tmp/dunebae1da.output
 #  }
 # Workspace root:
 # /home/pi/ntua/programming_languages_1/project_1/part_1/test_bed
+$ (cd _build/default && /home/pi/.opam/4.11.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I .helloworld.eobjs/byte -no-alias-deps -opaque -o .helloworld.eobjs/byte/dune__exe__Helloworld.cmo -c -impl helloworld.ml)
+> File "helloworld.ml", line 75, characters 31-38:
+> 75 |           solve tl (imp_idxs @ new_imp) local_max (pos+1) 
+>                                     ^^^^^^^
+> Error: This expression has type importantIndex list
+>        but an expression was expected of type int list
+>        Type importantIndex is not compatible with type int 
+[2]

@@ -87,7 +87,7 @@ InputVals ParseInputFile(const string& filename)
 	std::getline(inputFile, line2);
 
 	pos = line1.find(delim);
-	auto dc = std::stoi(line1.substr(0, pos)); // get the days count.
+	size_t dc = std::stoi(line1.substr(0, pos)); // get the days count.
 	auto hc = std::stoi(line1.substr(pos)); // get the hospital count.
 
 	vector<int> days;
