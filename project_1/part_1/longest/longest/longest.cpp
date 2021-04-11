@@ -69,7 +69,7 @@ int main(int argc, char** argv)
 
 	// $$$
 	std::cout << result;
-	std::cout << std::endl;
+//	std::cout << std::endl;
 }
 
 /// <summary>
