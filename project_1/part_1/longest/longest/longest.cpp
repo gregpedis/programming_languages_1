@@ -47,7 +47,7 @@ vector<int> ParseInputFile(const string& filename)
 	int token, simplifiedValue;
 	size_t pos = 0;
 
-	std::ifstream inputFile(filename); 
+	std::ifstream inputFile(filename);
 	std::getline(inputFile, line1);
 	std::getline(inputFile, line2);
 
@@ -95,6 +95,7 @@ vector<int> ParseInputFile(const string& filename)
 /// </summary>
 int GetMaximumLength(const vector<int>& prefixes)
 {
+	// short-circuit the execution on best-case because we are O(1cool like that.
 	if (prefixes.back() >= 0)
 	{
 		return prefixes.size() - 1;
@@ -109,21 +110,17 @@ int GetMaximumLength(const vector<int>& prefixes)
 	validLeft.reserve(n);
 	validRight.reserve(n);
 
-
 	// Initialize the initial conditions of the vectors.
 	validLeft[0] = prefixes[0];
 	validRight[n - 1] = prefixes.back();
 
-	// Populate the LMin vector.
+	j = n - 2;
+	// Populate the LMin and RMax vectors.
 	for (i = 1; i < n; ++i)
 	{
 		validLeft[i] = std::min(prefixes[i], validLeft[i - 1]);
-	}
-
-	// Populate the RMax vector.
-	for (j = n - 2; j >= 0; --j)
-	{
 		validRight[j] = std::max(prefixes[j], validRight[j + 1]);
+		j--;
 	}
 
 	// Do a two-pointer traversal to calculate total optimal j-i.
