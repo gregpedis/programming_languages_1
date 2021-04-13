@@ -7,18 +7,16 @@
 #include <vector>
 #include <string>
 
-
 using std::vector;
 using std::string;
-
 
 // simple container for an important index.
 struct ImportantIndex {
 public:
-	size_t index;
+	int index;
 	int prefix;
 
-	ImportantIndex(size_t idx, int prfx) : index(idx), prefix(prfx) { }
+	ImportantIndex(int idx, int prfx) : index(idx), prefix(prfx) { }
 };
 
 // simple container struct for the file parameters.
@@ -43,11 +41,8 @@ public:
 // #pragma region DECLARATIONS 
 
 InputVals ParseInputFile(const string& filename);
-vector<int> SimplifyInput(const InputVals& inputVals);
-vector<int> GeneratePrefixes(const vector<int>& values);
-
+vector<int> GenerateSimplifiedPrefixes(const InputVals& inputVals);
 int GetMaximumLength(const vector<int>& prefixes);
-int FindLocalOptimalLeftPrefix(const vector<ImportantIndex>& importantIndexes, const int& rightPrefix);
 
 // #pragma endregion
 
@@ -59,17 +54,20 @@ int main(int argc, char** argv)
 {
 	// Get the filename from the first command-line argument and parse its contents.
 	auto inputVals = ParseInputFile(string(argv[1]));
-	// Convert the problem into a simpler one.
-	auto values = SimplifyInput(inputVals);
 
-	// Generate the prefix array.
-	auto prefixes = GeneratePrefixes(values);
+	//// Convert the problem into a simpler one.
+	//auto values = SimplifyInput(inputVals);
+	//// Generate the prefix array.
+	//auto prefixes = GeneratePrefixes(values);
+
+	// Convert the problem into a simpler one and generat the prefix array in one step.
+	auto prefixes = GenerateSimplifiedPrefixes(inputVals);
+
 	// Solve the algorithm.
 	auto result = GetMaximumLength(prefixes);
 
 	// $$$
-	std::cout << result;
-//	std::cout << std::endl;
+	std::cout << result << std::endl;
 }
 
 /// <summary>
@@ -116,32 +114,18 @@ InputVals ParseInputFile(const string& filename)
 /// [[ -1 * (SUM(M) + N*K) >=0 ]]
 /// which in turn means "add K to every M1, M2... and invert the sign:
 /// [M1,M2, ...] ---> [-1 *(M1+K), -1*(M2+K), ...]
+/// Afterwards, generate a prefix array, where the first element is 0 to properly calculate index distance.
+/// In a normal prefix tree, for example Pn - P0 is the sum of n-1 elements, 
+/// whereas the result needed should be n.
 /// </summary>
-vector<int> SimplifyInput(const InputVals& inputVals)
+vector<int> GenerateSimplifiedPrefixes(const InputVals& inputVals)
 {
-	vector<int> simplified;
+	vector<int> prefixes = { 0 };
 
 	for (size_t i = 0; i < inputVals.days().size(); i++)
 	{
 		int newValue = -1 * (inputVals.days()[i] + inputVals.hospital_count());
-		simplified.push_back(newValue);
-	}
-
-	return simplified;
-}
-
-/// <summary>
-/// Generate a prefix array, where the first element is 0 to properly calculate index distance.
-/// In a normal prefix tree, for example Pn - P0 is the sum of n-1 elements, 
-/// whereas the result needed should be n.
-/// </summary>
-vector<int> GeneratePrefixes(const vector<int>& values)
-{
-	vector<int> prefixes = { 0 };
-
-	for (size_t i = 0; i < values.size(); i++)
-	{
-		prefixes.push_back(prefixes[i] + values[i]);
+		prefixes.push_back(prefixes[i] + newValue);
 	}
 
 	return prefixes;
@@ -160,55 +144,104 @@ vector<int> GeneratePrefixes(const vector<int>& values)
 /// </summary>
 int GetMaximumLength(const vector<int>& prefixes)
 {
-	int ans = 0;
-	//initialize the first prefix as it is a valid important index by definition.
-	vector<ImportantIndex> validLeftPrefixes = { ImportantIndex(0, prefixes[0]) };
-
-	for (size_t i = 0; i < prefixes.size(); i++)
+	if (prefixes.back() >= 0)
 	{
-		if (prefixes[i] - validLeftPrefixes.back().prefix >= 0)
-		{
-			auto j = FindLocalOptimalLeftPrefix(validLeftPrefixes, prefixes[i]);
-			ans = std::max(ans, int(i - j));
-		}
-
-		if (prefixes[i] < validLeftPrefixes.back().prefix)
-		{
-			validLeftPrefixes.push_back({ i, prefixes[i] });
-		}
+		return prefixes.size() - 1;
 	}
 
-	return ans;
-}
+	int maxDiff, i, j;
+	int n = prefixes.size();
 
-/// <summary>
-/// The binary search of the important index array.
-/// </summary>
-int FindLocalOptimalLeftPrefix(
-	const vector<ImportantIndex>& leftPrefixes, const int& rightPrefix)
-{
-	// Starting and ending index of search space.
-	int l = 0;
-	int h = leftPrefixes.size() - 1;
-	int m;
+	const int max_n = 500000;
 
-	// To store required index value.
-	int ans = leftPrefixes[h].index;
+	int* LMin = (int*)malloc(max_n * sizeof(int));
+	int* RMax= (int*)malloc(max_n * sizeof(int));
 
-	//Binary search loop to find the left-most valid prefix.
-	while (l < h) {
-		// calculate the midpoint like this 
-		// to avoid a possible integer overflow.
-		// ref https://en.wikipedia.org/wiki/Binary_search_algorithm#Implementation_issues
-		m = l + (h - l) / 2;
-		if (rightPrefix - leftPrefixes[m].prefix >= 0) {
-			ans = leftPrefixes[m].index;
-			h = m - 1;
+	if (!LMin || !RMax)
+	{
+		std::cout << "Memory Allocation Failed";
+		exit(1);
+	}
+
+	LMin[0] = prefixes[0];
+	RMax[n - 1] = prefixes.back();
+
+	for (i = 1; i < n; ++i)
+	{
+		LMin[i] = std::min(prefixes[i], LMin[i - 1]);
+	}
+
+	// Construct RMax[] such that RMax[j]
+	// stores the maximum value
+	// from (arr[j], arr[j+1], ..arr[n-1])
+	for (j = n - 2; j >= 0; --j)
+	{
+		RMax[j] = std::max(prefixes[j], RMax[j + 1]);
+	}
+
+	// Traverse both arrays from left to right
+	// to find optimum j - i
+	// This process is similar to merge()
+	// of MergeSort
+	i = 0, j = 0, maxDiff = -1;
+	while (j < n && i < n)
+	{
+		if (LMin[i] < RMax[j])
+		{
+			maxDiff = std::max(maxDiff, j - i);
+			j = j + 1;
 		}
 		else
-			l = m + 1;
+		{
+			i = i + 1;
+		}
 	}
 
-	return ans;
+	return maxDiff;
+
+	/*vector<ImportantIndex> validLeft = { ImportantIndex(0, prefixes[0]) };
+	vector<ImportantIndex> validRight = { ImportantIndex(prefixes.size() - 1, prefixes.back()) };
+
+	int i = 1;
+	int j = prefixes.size() - 2;
+	int n = int(prefixes.size());
+
+	for (i = 1; i < n; ++i)
+	{
+		if (prefixes[i] < validLeft.back().prefix)
+		{
+			validLeft.push_back({ i, prefixes[i] });
+		}
+
+		if (prefixes[j] > validRight.back().prefix)
+		{
+			validRight.push_back({ j, prefixes[j] });
+		}
+
+		--j;
+	}
+
+	int n_left = int(validLeft.size());
+	int n_right = int(validRight.size());
+	i = 0;
+	j = n_right - 1;
+
+	int ans = 0;
+
+	while (i < n_left && j >= 0)
+	{
+		if (validLeft[i].prefix <= validRight[j].prefix
+			&& validLeft[i].index <= validRight[j].index)
+		{
+			ans = std::max(ans, validRight[j].index - validLeft[i].index);
+			--j;
+		}
+		else
+		{
+			++i;
+		}
+	}
+
+	return ans;*/
 }
 
