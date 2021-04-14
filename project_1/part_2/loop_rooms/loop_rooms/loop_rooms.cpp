@@ -8,13 +8,18 @@
 #include <array>
 #include <string>
 
-
 using std::vector;
 using std::string;
 
+struct Rooms {
+public:
+	size_t x, y;
+	vector<char> rooms;
 
-// easier to compare than chars.
-enum class RoomDirection { Up, Down, Left, Right };
+	Rooms(size_t x, size_t y, vector<char> rooms)
+		: x(x), y(y), rooms(std::move(rooms))
+	{ }
+};
 
 // easier way of reading the coordinates than a pair.
 struct RoomPosition {
@@ -24,33 +29,15 @@ public:
 	RoomPosition(size_t x, size_t y) : x(x), y(y) { }
 };
 
-// simple container struct for the file parameters.
-struct InputVals {
-private:
-	size_t m_size_x;
-	size_t m_size_y;
-	vector <vector<RoomDirection>> m_rooms;
-
-public:
-	size_t size_x() const { return m_size_x; }
-	size_t size_y() const { return m_size_y; }
-	vector<vector<RoomDirection>> rooms() const { return m_rooms; }
-
-	InputVals(size_t x, size_t y, vector<vector<RoomDirection>> rooms)
-		: m_size_x(x), m_size_y(y), m_rooms(std::move(rooms))
-	{ }
-};
-
-
 // Function declarations.
 // #pragma region DECLARATIONS 
 
-InputVals ParseInputFile(const string& filename);
-RoomDirection GetRoomValue(const char& room);
+Rooms ParseInputFile(const string& filename);
+int GetRowMajorIndex(int i, int j, int n_cols);
 
-int GetInvalidRoomCount(const InputVals& inputVals);
-vector<RoomPosition> GetValidPerimeterRooms(const InputVals& inputVals);
-int GetValidRoomCountByRoom(const InputVals& inputVals, const RoomPosition& position);
+int GetInvalidRoomCount(const Rooms& rooms);
+vector<RoomPosition> GetValidPerimeterRooms(const Rooms& rooms);
+int GetValidRoomCountByRoom(const Rooms& rooms, const RoomPosition& position);
 
 // #pragma endregion
 
@@ -59,20 +46,19 @@ int GetValidRoomCountByRoom(const InputVals& inputVals, const RoomPosition& posi
 int main(int argc, char** argv)
 {
 	// Get the filename from the first command-line argument and parse its contents.
-	auto inputVals = ParseInputFile(string(argv[1]));
+	auto rooms = ParseInputFile(string(argv[1]));
 
 	// Solve the algorithm.
-	auto result = GetInvalidRoomCount(inputVals);
+	auto result = GetInvalidRoomCount(rooms);
 
 	// $$$
-	std::cout << result;
-	std::cout << std::endl;
+	std::cout << result << std::endl;
 }
 
 /// <summary>
 /// Read some data from a file.
 /// </summary>
-InputVals ParseInputFile(const string& filename)
+Rooms ParseInputFile(const string& filename)
 {
 	std::ifstream inputFile(filename); //implicit constructor call.
 
@@ -82,7 +68,9 @@ InputVals ParseInputFile(const string& filename)
 	size_t size_x = std::stoi(headerline.substr(0, pos));	// read up until delimiter, convert to int.
 	size_t size_y = std::stoi(headerline.substr(pos + 1));	// read remaining string, convert to int.
 
-	vector<vector<RoomDirection>> rooms;
+	vector<char> rooms;
+	rooms.reserve(size_x * size_y);
+
 	string line;
 
 	// read all room positions and 
@@ -90,42 +78,25 @@ InputVals ParseInputFile(const string& filename)
 	for (size_t i = 0; i < size_x; ++i)
 	{
 		std::getline(inputFile, line);
-		vector<RoomDirection> roomRow;
 
 		for (size_t j = 0; j < size_y; ++j)
 		{
-			auto roomValue = GetRoomValue(line[j]);
-			roomRow.push_back(roomValue);
+			rooms.push_back(line[j]);
 		}
-
-		rooms.push_back(roomRow);
 	}
 
 	// most likely not needed, since the function's destructor calls this implicitly.
 	inputFile.close();
 
-	InputVals result(size_x, size_y, rooms);
-	return result;
+	Rooms res = Rooms(size_x, size_y, rooms);
+	return res;
 }
 
-/// <summary>
-/// Simple character to RoomDirection instance converter.
-/// </summary>
-RoomDirection GetRoomValue(const char& room)
+int GetRowMajorIndex(int i, int j, int n_cols)
 {
-	switch (room)
-	{
-	case 'U':
-		return RoomDirection::Up;
-	case 'D':
-		return RoomDirection::Down;
-	case 'L':
-		return RoomDirection::Left;
-	case 'R':
-	default: //not necessary in the usecase, but c++11 compilation throws a warning.
-		return RoomDirection::Right;
-	}
+	return i * n_cols + j;
 }
+
 
 /// <summary>
 /// The actual algorithm solver.
@@ -133,17 +104,17 @@ RoomDirection GetRoomValue(const char& room)
 /// Then foreach one of them it executes a Depth-First Traversal to find all the valid rooms.
 /// The solution is [AllRooms - ValidRooms], since the question is the number of invalid rooms.
 /// </summary>
-int GetInvalidRoomCount(const InputVals& inputVals)
+int GetInvalidRoomCount(const Rooms& rooms)
 {
-	const auto validRimRooms = GetValidPerimeterRooms(inputVals);
+	const auto validRimRooms = GetValidPerimeterRooms(rooms);
 	int count = validRimRooms.size();
 
 	for (auto& room : validRimRooms)
 	{
-		count += GetValidRoomCountByRoom(inputVals, room);
+		count += GetValidRoomCountByRoom(rooms, room);
 	}
 
-	return inputVals.size_x() * inputVals.size_y() - count;
+	return rooms.x * rooms.y - count;
 }
 
 /// <summary>
@@ -152,39 +123,36 @@ int GetInvalidRoomCount(const InputVals& inputVals)
 /// as well as the rooms of the first and last column
 /// which direction is looking "outside" the maze.
 /// </summary>
-vector<RoomPosition> GetValidPerimeterRooms(const InputVals& inputVals)
+vector<RoomPosition> GetValidPerimeterRooms(const Rooms& rooms)
 {
 	vector<RoomPosition> validRimRooms;
 
-	size_t max_x = inputVals.size_x() - 1;
-	size_t max_y = inputVals.size_y() - 1;
-
-	for (size_t j = 0; j <= max_y; ++j)
+	for (size_t j = 0; j < rooms.y; ++j)
 	{
-		if (inputVals.rooms()[0][j] == RoomDirection::Up)
+		if (rooms.rooms[GetRowMajorIndex(0, j, rooms.y)] == 'U')
 		{
 			const auto newPos = RoomPosition(0, j);
 			validRimRooms.push_back(newPos);
 		}
 
-		if (inputVals.rooms()[max_x][j] == RoomDirection::Down)
+		if (rooms.rooms[GetRowMajorIndex(rooms.x - 1, j, rooms.y)] == 'D')
 		{
-			const auto newPos = RoomPosition(max_x, j);
+			const auto newPos = RoomPosition(rooms.x - 1, j);
 			validRimRooms.push_back(newPos);
 		}
 	}
 
-	for (size_t i = 0; i <= max_x; ++i)
+	for (size_t i = 0; i < rooms.x; ++i)
 	{
-		if (inputVals.rooms()[i][0] == RoomDirection::Left)
+		if (rooms.rooms[GetRowMajorIndex(i, 0, rooms.y)] == 'L')
 		{
 			const auto newPos = RoomPosition(i, 0);
 			validRimRooms.push_back(newPos);
 		}
 
-		if (inputVals.rooms()[i][max_y] == RoomDirection::Right)
+		if (rooms.rooms[GetRowMajorIndex(i, rooms.y-1, rooms.y)] == 'R')
 		{
-			const auto newPos = RoomPosition(i, max_y);
+			const auto newPos = RoomPosition(i, rooms.y-1);
 			validRimRooms.push_back(newPos);
 		}
 	}
@@ -197,37 +165,35 @@ vector<RoomPosition> GetValidPerimeterRooms(const InputVals& inputVals)
 /// by executing a relative Depth-First Traversal.
 /// </summary>
 int GetValidRoomCountByRoom(
-	const InputVals& inputVals, const RoomPosition& position)
+	const Rooms& rooms, const RoomPosition& position)
 {
 	int count = 0;
 
-	if (position.x + 1 < inputVals.size_x()
-		&& inputVals.rooms()[position.x + 1][position.y] == RoomDirection::Up)
+	if (position.x + 1 < rooms.x
+		&& rooms.rooms[GetRowMajorIndex(position.x + 1, position.y, rooms.y)] == 'U')
 	{
 		const auto newPos = RoomPosition(position.x + 1, position.y);
-		count += 1 + GetValidRoomCountByRoom(inputVals, newPos);
+		count += 1 + GetValidRoomCountByRoom(rooms, newPos);
 	}
 
-	if (position.x > 0)
+	if (position.x > 0
+		&& rooms.rooms[GetRowMajorIndex(position.x - 1, position.y, rooms.y)] == 'D')
 	{
-		if (inputVals.rooms()[position.x - 1][position.y] == RoomDirection::Down)
-		{
-			const auto newPos = RoomPosition(position.x - 1, position.y);
-			count += 1 + GetValidRoomCountByRoom(inputVals, newPos);
-		}
+		const auto newPos = RoomPosition(position.x - 1, position.y);
+		count += 1 + GetValidRoomCountByRoom(rooms, newPos);
 	}
 
-	if ((position.y + 1) < inputVals.size_y()
-		&& inputVals.rooms()[position.x][position.y + 1] == RoomDirection::Left)
+	if ((position.y + 1) < rooms.y
+		&& rooms.rooms[GetRowMajorIndex(position.x, position.y + 1, rooms.y)] == 'L')
 	{
 		const auto newPos = RoomPosition(position.x, position.y + 1);
-		count += 1 + GetValidRoomCountByRoom(inputVals, newPos);
+		count += 1 + GetValidRoomCountByRoom(rooms, newPos);
 	}
 	if (position.y > 0
-		&& inputVals.rooms()[position.x][position.y - 1] == RoomDirection::Right)
+		&& rooms.rooms[GetRowMajorIndex(position.x, position.y - 1, rooms.y)] == 'R')
 	{
 		const auto newPos = RoomPosition(position.x, position.y - 1);
-		count += 1 + GetValidRoomCountByRoom(inputVals, newPos);
+		count += 1 + GetValidRoomCountByRoom(rooms, newPos);
 	}
 
 	return count;

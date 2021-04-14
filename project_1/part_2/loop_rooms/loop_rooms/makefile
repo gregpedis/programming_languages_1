@@ -2,7 +2,7 @@
 CC = g++
 
 # compiler flags
-CFLAGS = --std=c++11 -Wall -Werror -O3
+CFLAGS = --std=c++11 -Wall -Werror -O3 -g
 
 # the build target executable
 TARGET = loop_rooms
