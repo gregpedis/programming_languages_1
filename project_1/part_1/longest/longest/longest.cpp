@@ -49,7 +49,6 @@ vector<int> ParseInputFile(const string& filename)
 
 	std::ifstream inputFile(filename);
 	std::getline(inputFile, line1);
-	std::getline(inputFile, line2);
 
 	pos = line1.find(delim);
 	size_t dc = std::stoi(line1.substr(0, pos)); // get the days count.
@@ -58,11 +57,10 @@ vector<int> ParseInputFile(const string& filename)
 	vector<int> prefixes = { 0 };
 	prefixes.reserve(dc + 1);
 
-	for (size_t i = 0; i < dc; i++)
+	int i = 0;
+	while (std::getline(inputFile, line2, ' '))
 	{
-		pos = line2.find(delim);
-		token = std::stoi(line2.substr(0, pos)); // get a "day"
-
+		token = std::stoi(line2);
 		// This is kinda wonky, but the gist of it is our problem is solved by the metric: 
 		// [[ SUM( M )/( N*K ) <= -1 ]]
 		// where M : a sub-array, N: length of M, K: a constant.
@@ -73,8 +71,7 @@ vector<int> ParseInputFile(const string& filename)
 		// Afterwards, generate a prefix array, where the first element is 0 to properly calculate index distance.
 		simplifiedValue = -1 * (token + hc);
 		prefixes.push_back(simplifiedValue + prefixes[i]);
-
-		line2.erase(0, pos + delim.length());
+		i++;
 	}
 
 	// most likely not needed, since the function's destructor calls this implicitly.
