@@ -12,11 +12,15 @@ let get_simplified_prefixes l hc =
       | [a] 
       | a :: _ -> (simplify v + a) :: acc
     in
-      0 :: List.rev (List.fold_left partial_apply [] l)
+    (*  fold left since it's tail recursive and allows us to do :: instead of @, 
+        which is O(1) instead of O(N) *)
+      0 :: List.rev (List.fold_left partial_apply [] l) 
       
 let solve prefixes =
+  (* short circuit the execution on the occasion that the entire array is the optimal solution *)
   if last prefixes >= 0 then (List.length prefixes - 1)
   else 
+    (* apply_left/apply_right are used to do some partial application of min/max during a fold *)
     let apply_left f acc v = 
       match acc with
       | [] -> [v]
@@ -28,6 +32,8 @@ let solve prefixes =
       and valid_right = List.fold_right (apply_right max) prefixes []
       in
         let rec rec_solve valid_left valid_right i j res =
+          (*  This next pattern-match is kinda ugly, cause we much 2 thingies at once,
+              so the cases are more, but it maps exactly like the cpp while-loop two-pointer traversal *)
           match (valid_left, valid_right) with
           | ([], _) -> res
           | (_, []) -> res
@@ -44,6 +50,7 @@ let solve prefixes =
               then rec_solve valid_left tl2 i (j+1) (max res (j-i))
               else rec_solve tl1 valid_right (i+1) j res end
         in
+          (* Entrypoint of solver *)
           (rec_solve valid_left valid_right 0 0 (-1)) 
 
 

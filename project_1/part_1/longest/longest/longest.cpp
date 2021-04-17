@@ -92,7 +92,7 @@ vector<int> ParseInputFile(const string& filename)
 /// </summary>
 int GetMaximumLength(const vector<int>& prefixes)
 {
-	// short-circuit the execution on best-case because we are O(1cool like that.
+	// short-circuit the execution on best-case because we are O(1)-cool like that.
 	if (prefixes.back() >= 0)
 	{
 		return prefixes.size() - 1;
@@ -137,4 +137,3 @@ int GetMaximumLength(const vector<int>& prefixes)
 
 	return maxDiff;
 }
-

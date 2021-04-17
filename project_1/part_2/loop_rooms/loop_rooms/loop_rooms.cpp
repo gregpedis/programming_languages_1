@@ -11,6 +11,7 @@
 using std::vector;
 using std::string;
 
+// this keeps our input values nice and tidy.
 struct Rooms {
 public:
 	size_t x, y;
@@ -69,7 +70,8 @@ Rooms ParseInputFile(const string& filename)
 	size_t size_y = std::stoi(headerline.substr(pos + 1));	// read remaining string, convert to int.
 
 	vector<char> rooms;
-	rooms.reserve(size_x * size_y);
+	// reserving the entire room array in an 1d array, since we are using row-major ordering for cache-locality.
+	rooms.reserve(size_x * size_y); 
 
 	string line;
 
@@ -88,20 +90,20 @@ Rooms ParseInputFile(const string& filename)
 	// most likely not needed, since the function's destructor calls this implicitly.
 	inputFile.close();
 
-	Rooms res = Rooms(size_x, size_y, rooms);
+	auto res = Rooms(size_x, size_y, rooms);
 	return res;
 }
 
+// Simple shorthand of 2d -> row-major 1d translation.
 int GetRowMajorIndex(int i, int j, int n_cols)
 {
 	return i * n_cols + j;
 }
 
-
 /// <summary>
 /// The actual algorithm solver.
 /// It starts by finding the valid perimeter rooms(first and last row, first and last column).
-/// Then foreach one of them it executes a Depth-First Traversal to find all the valid rooms.
+/// Then for-each one of them it executes a Depth-First Traversal to find all the valid rooms.
 /// The solution is [AllRooms - ValidRooms], since the question is the number of invalid rooms.
 /// </summary>
 int GetInvalidRoomCount(const Rooms& rooms)
@@ -114,7 +116,7 @@ int GetInvalidRoomCount(const Rooms& rooms)
 		count += GetValidRoomCountByRoom(rooms, room);
 	}
 
-	return rooms.x * rooms.y - count;
+	return rooms.x * rooms.y - count; // [AllRooms - ValidRooms]
 }
 
 /// <summary>
@@ -129,13 +131,13 @@ vector<RoomPosition> GetValidPerimeterRooms(const Rooms& rooms)
 
 	for (size_t j = 0; j < rooms.y; ++j)
 	{
-		if (rooms.rooms[GetRowMajorIndex(0, j, rooms.y)] == 'U')
+		if (rooms.rooms[GetRowMajorIndex(0, j, rooms.y)] == 'U') // check first row
 		{
 			const auto newPos = RoomPosition(0, j);
 			validRimRooms.push_back(newPos);
 		}
 
-		if (rooms.rooms[GetRowMajorIndex(rooms.x - 1, j, rooms.y)] == 'D')
+		if (rooms.rooms[GetRowMajorIndex(rooms.x - 1, j, rooms.y)] == 'D') // check last row
 		{
 			const auto newPos = RoomPosition(rooms.x - 1, j);
 			validRimRooms.push_back(newPos);
@@ -144,13 +146,13 @@ vector<RoomPosition> GetValidPerimeterRooms(const Rooms& rooms)
 
 	for (size_t i = 0; i < rooms.x; ++i)
 	{
-		if (rooms.rooms[GetRowMajorIndex(i, 0, rooms.y)] == 'L')
+		if (rooms.rooms[GetRowMajorIndex(i, 0, rooms.y)] == 'L') // check first column
 		{
 			const auto newPos = RoomPosition(i, 0);
 			validRimRooms.push_back(newPos);
 		}
 
-		if (rooms.rooms[GetRowMajorIndex(i, rooms.y-1, rooms.y)] == 'R')
+		if (rooms.rooms[GetRowMajorIndex(i, rooms.y-1, rooms.y)] == 'R') // check last column
 		{
 			const auto newPos = RoomPosition(i, rooms.y-1);
 			validRimRooms.push_back(newPos);
@@ -163,6 +165,7 @@ vector<RoomPosition> GetValidPerimeterRooms(const Rooms& rooms)
 /// <summary>
 /// Finds the valid rooms ending in room [position],
 /// by executing a relative Depth-First Traversal.
+/// Since && is lazy and short-circuits, indexing is safe (array-size-wise) after it.
 /// </summary>
 int GetValidRoomCountByRoom(
 	const Rooms& rooms, const RoomPosition& position)
