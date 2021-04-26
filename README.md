@@ -6,10 +6,10 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 
 | Project | Part | Language |        State        |
 |:-------:|:----:|:--------:|:-------------------:|
-|    1    |   1  |    CPP   |     **Finished**    |
-|    1    |   1  |   OCaml  |     **Finished**    |
-|    1    |   2  |    CPP   |     **Finished**    |
-|    1    |   2  |   OCaml  |    Requires work    |
+|    1    |   1  |    CPP   |     **Finished**        |
+|    1    |   1  |   OCaml  |     **Finished**        |
+|    1    |   2  |    CPP   |     **Finished**        |
+|    1    |   2  |   OCaml  |     Finished        |
 
 
 
@@ -33,3 +33,7 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 - Added comments on project 1 part 1 OCaml implementation.
 - Added comments on project 1 part 2 CPP implementation.
 - Added comments on project 1 part 2 OCaml Implementation.
+
+### 26/04/2021
+
+- Finished the project 1 part 2 OCaml optimal implementation.
