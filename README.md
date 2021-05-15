@@ -9,7 +9,7 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 |    1    |   1  |    CPP   |     **Finished**        |
 |    1    |   1  |   OCaml  |     **Finished**        |
 |    1    |   2  |    CPP   |     **Finished**        |
-|    1    |   2  |   OCaml  |     Finished        |
+|    1    |   2  |   OCaml  |     **Finished**        |
 
 
 
@@ -36,4 +36,6 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 
 ### 26/04/2021
 
-- Finished the project 1 part 2 OCaml **optimal** implementation.
+- Finished the project 1 part 2 OCaml **optimal implementation**.
+
+
