@@ -1,16 +1,18 @@
+import sys 
 from collections import deque as Stack
 from collections import deque as Queue
 
 # STACK : append, pop, clear, copy, used as iterable
 # QUEUE : append, popleft, clear, copy, used as iterable
 
-filename = "../testcases/qs1.txt"
+filename_placeholder = "../testcases/qs@@.txt"
 
 
 class State:
-    def __init__(self, queue: Queue = None, stack: Stack = None):
+    def __init__(self, ops_string="", queue: Queue = None, stack: Stack = None):
         self.queue = queue if queue is not None else Queue()
         self.stack = stack if stack is not None else Stack()
+        self.ops_string = ops_string
         self.done = self._is_done()
 
     def _is_done(self):
@@ -29,7 +31,7 @@ class State:
         new_s = self.stack.copy()
         v = new_q.popleft()
         new_s.append(v)
-        new_state = State(new_q, new_s)
+        new_state = State(self.ops_string + "Q", new_q, new_s)
         return new_state
 
     def execute_operation_S(self):
@@ -37,7 +39,7 @@ class State:
         new_s = self.stack.copy()
         v = new_s.pop()
         new_q.append(v)
-        new_state = State(new_q, new_s)
+        new_state = State(self.ops_string + "S", new_q, new_s)
         return new_state
 
     def __hash__(self):
@@ -52,66 +54,50 @@ class State:
         return not self == other
 
 
-class TreeNode:
-    def __init__(self, state: State, ops_string: str, left=None, right=None):
-        self.state = state
-        self.ops_string = ops_string
-        self.child_left = left
-        self.child_right = right
-
-
 def parse_file(filename):
     with open(filename, "rt") as f:
         lines = f.readlines()
-        return [int(x) for x in lines[1].split(" ")]
+        values = [int(x) for x in lines[1].split(" ")]
+        return State("", Queue(values))
 
 
-def generate_children(parent: TreeNode, visited: set):
-    if parent is None or parent.state.done:
-        return
+def bfs(initial: State):
+    visited = {initial}
+    state_queue = Queue([initial])
 
-    if parent.state.operation_Q_allowed():
-        left_state = parent.state.execute_operation_Q()
-        if left_state not in visited:
-            parent.child_left = TreeNode(
-                left_state, parent.ops_string + "Q")
-            if not left_state.done:
-                visited.add(left_state)
+    while state_queue:
+        curr_state = state_queue.popleft()
+        if curr_state.done:
+            return curr_state.ops_string
 
-    if parent.state.operation_S_allowed():
-        right_state = parent.state.execute_operation_S()
-        if right_state not in visited:
-            parent.child_right = TreeNode(
-                right_state, parent.ops_string + "S")
-            if not right_state.done:
-                visited.add(right_state)
+        if curr_state.operation_Q_allowed():
+            next_state_q = curr_state.execute_operation_Q()
+            if next_state_q not in visited:
+                visited.add(next_state_q)
+                state_queue.append(next_state_q)
 
-    generate_children(parent.child_left, visited)
-    generate_children(parent.child_right, visited)
+        if curr_state.operation_S_allowed():
+            next_state_s = curr_state.execute_operation_S()
+            if next_state_s not in visited:
+                visited.add(next_state_s)
+                state_queue.append(next_state_s)
 
-
-def create_tree(values):
-    state = State(Queue(values))
-
-    parent = TreeNode(state, "")
-    visited = {state}
-    generate_children(parent, visited)
-
-    return parent
+    raise Exception("BFS: No solution found.")
 
 
-def bfs(node: TreeNode):
-    return ""
+def solve(filename):
+    initial_state = parse_file(filename)
+    solution = bfs(initial_state)
+    print(solution if solution else "empty")
 
 
-def solve():
-    values = parse_file(filename)
-    tree = create_tree(values)
-    return tree
-    solution = bfs(tree)
-    return solution
+def solve_multiple():
+    fns = [filename_placeholder.replace("@@", str(i)) 
+            for i in range(1, 6)]
+    for fn in fns:
+        solve(fn)
 
 
 if __name__ == "__main__":
-    solution = solve()
-    print(solution)
+    #solve(sys.argv[1])
+    solve_multiple()
