@@ -39,3 +39,7 @@ A repository containing all the solutions of the Programming Languages 1 ECE NTU
 - Finished the project 1 part 2 OCaml **optimal implementation**.
 
 
+### 16/05/2021
+
+- Finished the project 2 part1 and part 2 python **optimal implementation**.
+
