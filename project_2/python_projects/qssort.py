@@ -21,7 +21,7 @@ class State:
     def _is_done(self):
         q_sorted = all(self.queue[i] <= self.queue[i+1]
                        for i in range(len(self.queue)-1))
-        return q_sorted and len(self.stack) == 0
+        return len(self.stack) == 0 and q_sorted
 
     def operation_Q_allowed(self):
         return len(self.queue) > 0
@@ -80,7 +80,7 @@ def parse_file(filename):
 # minor help from https://www.programiz.com/dsa/graph-bfs
 # just to remind me of the queue BFS implementation.
 def bfs(initial: State):
-    visited = {initial}
+    visited = {hash(initial)}
     state_queue = Queue([initial])
 
     # while thingies exist in the queue of states, keep going.
@@ -94,15 +94,17 @@ def bfs(initial: State):
         # tries to execute a Q operation
         if curr_state.operation_Q_allowed():
             next_state_q = curr_state.execute_operation_Q()
-            if next_state_q not in visited:
-                visited.add(next_state_q)
+            q_hash = hash(next_state_q)
+            if q_hash not in visited:
+                visited.add(q_hash)
                 state_queue.append(next_state_q)
 
         # tries to execute an S operation
         if curr_state.operation_S_allowed():
             next_state_s = curr_state.execute_operation_S()
-            if next_state_s not in visited:
-                visited.add(next_state_s)
+            s_hash = hash(next_state_s)
+            if s_hash not in visited:
+                visited.add(s_hash)
                 state_queue.append(next_state_s)
 
     raise Exception("BFS: No solution found.")
@@ -129,5 +131,5 @@ def solve_multiple():
 
 
 if __name__ == "__main__":
-    #solve(sys.argv[1])
-    solve_multiple()
+    solve(sys.argv[1])
+    #solve_multiple()
