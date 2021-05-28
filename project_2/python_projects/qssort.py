@@ -17,9 +17,7 @@ class State:
         self.done = self._is_done()
 
     def _is_done(self):
-        q_sorted = all(self.queue[i] <= self.queue[i+1]
-                       for i in range(len(self.queue)-1))
-        return len(self.stack) == 0 and q_sorted
+        return len(self.stack) == 0 and all(self.queue[i] <= self.queue[i+1] for i in range(len(self.queue)-1))
 
     def operation_Q_allowed(self):
         return len(self.queue) > 0
