@@ -1,5 +1,6 @@
 import sys
 from collections import deque as Queue
+import time 
 
 
 # this represents a state of q/s.
@@ -24,7 +25,8 @@ class State:
         return len(self.queue) > 0
 
     def operation_S_allowed(self):
-        return len(self.stack) > 0
+        # check if the head of queue is the same as the tail of stack, since the move would be redundant.
+        return len(self.stack) > 0 and (len(self.queue) == 0 or self.queue[0] !=self.stack[-1])
 
     # executes a transition to a new state by doing a single Q operation
     def execute_operation_Q(self):
@@ -118,9 +120,12 @@ def solve(filename):
 def solve_multiple():
     filename_placeholder = "../testcases/qs@@.txt"
     fns = [filename_placeholder.replace("@@", str(i))
-           for i in range(1, 6)]
+           for i in range(1, 7)]
     for fn in fns:
+        tic = time.perf_counter()
         solve(fn)
+        toc = time.perf_counter()
+        print(f"Took {toc-tic:0.4f} seconds for {fn}.")
 
 
 if __name__ == "__main__":
