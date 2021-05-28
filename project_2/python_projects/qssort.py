@@ -1,18 +1,15 @@
-import sys 
-# This is redundant, but it makes the program more readable,
-# and that's what python is all about!
-from collections import deque as Stack
+import sys
 from collections import deque as Queue
 
-# STACK : append, pop, copy
-# QUEUE : append, popleft, copy
 
+# this represents a state of q/s.
+# It also has the "path" of operations encoded in a string.
 class State:
-    def __init__(self, ops_string="", queue: Queue = None, stack: Stack = None):
+    def __init__(self, ops_string="", queue: list = None, stack: list = None):
         # the current queue state
-        self.queue = queue if queue is not None else Queue()
+        self.queue = queue if queue is not None else list()
         # the current stack state
-        self.stack = stack if stack is not None else Stack()
+        self.stack = stack if stack is not None else list()
         # the operations that were applied from the original state to get here.
         self.ops_string = ops_string
         # calculates if the queue is sorted and the stack is empty.
@@ -31,19 +28,17 @@ class State:
 
     # executes a transition to a new state by doing a single Q operation
     def execute_operation_Q(self):
-        new_q = self.queue.copy()
-        new_s = self.stack.copy()
-        v = new_q.popleft()
-        new_s.append(v)
+        new_q = self.queue[1:]
+        new_s = self.stack[:]
+        new_s.append(self.queue[0])
         new_state = State(self.ops_string + "Q", new_q, new_s)
         return new_state
 
     # executes a transition to a new state by doing a single S operation
     def execute_operation_S(self):
-        new_q = self.queue.copy()
-        new_s = self.stack.copy()
-        v = new_s.pop()
-        new_q.append(v)
+        new_q = self.queue[:]
+        new_s = self.stack[:-1]
+        new_q.append(self.stack[-1])
         new_state = State(self.ops_string + "S", new_q, new_s)
         return new_state
 
@@ -71,8 +66,7 @@ def parse_file(filename):
         # list comprehension to read the values
         values = [int(x) for x in lines[1].split(" ")]
         # initialize the original state.
-        return State("", Queue(values))
-
+        return State("", values)
 
 
 # bfs without creating the tree.
@@ -110,7 +104,6 @@ def bfs(initial: State):
     raise Exception("BFS: No solution found.")
 
 
-
 # the solver.
 def solve(filename):
     # parses the file and initializes the first state.
@@ -124,8 +117,8 @@ def solve(filename):
 # testbed.
 def solve_multiple():
     filename_placeholder = "../testcases/qs@@.txt"
-    fns = [filename_placeholder.replace("@@", str(i)) 
-            for i in range(1, 6)]
+    fns = [filename_placeholder.replace("@@", str(i))
+           for i in range(1, 6)]
     for fn in fns:
         solve(fn)
 
