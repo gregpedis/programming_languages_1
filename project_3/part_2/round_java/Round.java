@@ -1,48 +1,116 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Testbed {
+public class Round {
   public static void main(String[] args) {
-    int myInt = 9;
-    double myDouble = myInt; // Automatic casting: int to double
-
-    System.out.println(myInt); // Outputs 9
-    System.out.println(myDouble); // Outputs 9.0
-
-    var mything = 3;
-    System.out.println(mything);
-
-    var someshit = mything > 3 ? true : mything < 2 ? true : false;
-
-    // var some = new ArrayList<Integer>();
-
-    // for (String string : args) {
-
-    // }
-
-    var some = new Something("name");
-
+    // Solve(args[0]);
+    SolveMultiple();
   }
 
-  public int add2(int x) {
-    return x + 2;
+  public static InputVals ParseFile(String filename) {
+    return null;
   }
 
-  public float add2(int x, int y) {
-    return x + 2;
+  public static int GetSum(List<Integer> list) {
+    int sum = 0;
+    for (var entry: list) {
+      sum+= entry;
+    }
+    return sum;
   }
 
+  public static boolean DistancesAreValid(LinkedList<Integer> distances, int last) {
+    var current = distances.pop();
+    var diff = current - (GetSum(distances) - last);
+    if (diff > 1) {
+      return false;
+    } else if (diff < -1) {
+      return DistancesAreValid(distances, current);
+    } else {
+      return true;
+    }
+  }
+
+  public static int CalculateTownDistance(int town, InputVals inputVals) {
+    var distances = new LinkedList<Integer>();
+    for (int i = 0; i < inputVals.TownCount; i++) {
+      var currentPosition = (town + i) % inputVals.TownCount;
+      var currentDistance = (inputVals.TownCount - i) % inputVals.TownCount;
+      if (inputVals.Positions.containsKey(currentPosition)) {
+        for (int j = 0; j < inputVals.Positions.get(currentPosition); j++) {
+          distances.push(currentDistance);
+        }
+      }
+    }
+    var distanceSum = GetSum(distances);
+    return DistancesAreValid(distances, 0) ? distanceSum : -1;
+  }
+
+  public static ArrayList<TownDistance> CalculateTownDistances(InputVals inputVals) {
+    var distances = new ArrayList<TownDistance>();
+
+    for (int i = 0; i < inputVals.TownCount; i++) {
+      var distance = CalculateTownDistance(i, inputVals);
+      if (distance >= 0) {
+        distances.add(new TownDistance(i, distance));
+      }
+    }
+    return distances;
+  }
+
+  public static void Solve(String filename) {
+    var inputVals = ParseFile(filename);
+    var distances = CalculateTownDistances(inputVals);
+    var result = distances.get(0);
+
+    for (var townDistance : distances) {
+      if (townDistance.Distance < result.Distance) {
+        result = townDistance;
+      }
+    }
+    System.out.format("%d %d", result.Distance, result.Town);
+  }
+
+  // TESTBED for all the testcases.
+  public static void SolveMultiple() {
+    String filename_placeholder = "../testcases/r@@.txt";
+    for (int i = 1; i < 3; i++) {
+      var filename = filename_placeholder.replace("@@", Integer.toString(i));
+      Solve(filename);
+    }
+  }
 }
 
-class Something {
-  private String Name;
+class TownDistance {
+  public int Town;
+  public int Distance;
 
-  public String getName() {return this.Name;}
-  public void setName(String value) { Name = value;}
+  public TownDistance(int town, int distance) {
+    Town = town;
+    Distance = distance;
+  }
+}
 
-  public Something(String name) {
-    Name = name;
+class InputVals {
+  public int TownCount;
+  public int CarCount;
+  public HashMap<Integer, Integer> Positions;
+
+  public InputVals(int townCount, int carCount, ArrayList<Integer> positions) {
+    TownCount = townCount;
+    CarCount = carCount;
+    InitializePositions(positions);
   }
 
-  public Something() {
+  private void InitializePositions(ArrayList<Integer> positions) {
+    for (var pos : positions) {
+      if (!Positions.containsKey(pos)) {
+        Positions.put(pos, 0);
+      }
+      Positions.put(pos, Positions.get(pos) + 1);
+    }
   }
+
 }

@@ -69,7 +69,7 @@ def solve(filename):
     result_town, result_distance = next(distances)
 
     for t, d in distances:
-        if d != -1 and d < result_distance:
+        if d < result_distance:
             result_town, result_distance = t,d
 
     print(f"{result_distance} {result_town}")
