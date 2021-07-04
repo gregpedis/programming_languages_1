@@ -1,48 +1,101 @@
-import java.util.ArrayList;
+import java.util.Stack;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
-public class Testbed {
+public class QSsort {
   public static void main(String[] args) {
-    int myInt = 9;
-    double myDouble = myInt; // Automatic casting: int to double
-
-    System.out.println(myInt); // Outputs 9
-    System.out.println(myDouble); // Outputs 9.0
-
-    var mything = 3;
-    System.out.println(mything);
-
-    var someshit = mything > 3 ? true : mything < 2 ? true : false;
-
-    // var some = new ArrayList<Integer>();
-
-    // for (String string : args) {
-
-    // }
-
-    var some = new Something("name");
-
+    //Solve(args[0]);
+    SolveMultiple();
   }
 
-  public int add2(int x) {
-    return x + 2;
+  public static void Solve(String filename) {
+    var initial_state = ParseFile(filename);
+    var solution = ExecuteBFS(initial_state);
+    System.out.println(solution);
   }
 
-  public float add2(int x, int y) {
-    return x + 2;
+  // TESTBED for all the testcases.
+  public static void SolveMultiple() {
+    String filename_placeholder = "../testcases/qs@@.txt";
+    for (int i = 1; i < 7; i++) {
+      var filename = filename_placeholder.replace("@@", Integer.toString(i));
+      Solve(filename);
+    }
   }
 
+  public static String ExecuteBFS(State initial) {
+    // initialize a set of ints
+    // initialize a queue of states
+    // while-loop over it and do a bfs
+    // when a state IsDone() then return the GetOperationsString()
+    return "placeholder";
+  }
+
+  public static State ParseFile(String filename) {
+    //read the file
+    // create an initial state
+    // return initial state
+    return null;
+  }
 }
 
-class Something {
-  private String Name;
+class State {
+  private String _operationsString;
 
-  public String getName() {return this.Name;}
-  public void setName(String value) { Name = value;}
+  private LinkedList<Integer> _queue;
+  private Stack<Integer> _stack;
 
-  public Something(String name) {
-    Name = name;
+  public State(String operationsString, LinkedList<Integer> queue, Stack<Integer> stack) {
+    _operationsString = operationsString;
+    _queue = queue;
+    _stack = stack;
   }
 
-  public Something() {
+  public String GetOperationsString() {
+    return _operationsString.isEmpty() ? "empty" : _operationsString;
   }
+
+  public boolean IsDone() {
+    return _stack.isEmpty() && isSorted(_queue);
+  }
+
+  private boolean isSorted(List<Integer> collection) 
+  {
+    for (int i = 0; i < collection.size() - 1; i++) 
+    {
+      if (collection.get(i) > collection.get(i + 1)) 
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean OperationAllowedQ() {
+    return !_queue.isEmpty();
+  }
+
+  public boolean OperationAllowedS() {
+    return !_stack.empty() && (_queue.isEmpty() || _stack.peek() != _queue.peek());
+  }
+
+  public State ExecuteOperationQ() {
+    var new_queue = new LinkedList<Integer>(_queue);
+    var new_stack = (Stack<Integer>) _stack.clone();
+
+    new_stack.push(new_queue.pop());
+    var new_operation_string = _operationsString + "Q";
+
+    return new State(new_operation_string, new_queue, new_stack);
+  }
+
+  public State ExecuteOperationS() {
+    var new_queue = new LinkedList<Integer>(_queue);
+    var new_stack = (Stack<Integer>) _stack.clone();
+    new_queue.push(new_stack.pop());
+    var new_operation_string = _operationsString + "S";
+    return new State(new_operation_string, new_queue, new_stack);
+  }
+
 }
