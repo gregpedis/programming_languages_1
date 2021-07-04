@@ -1,124 +1,85 @@
 import sys
+import time
 from collections import deque as Queue
-import time 
 
 
-# this represents a state of q/s.
-# It also has the "path" of operations encoded in a string.
-class State:
-    def __init__(self, ops_string="", queue: list = None, stack: list = None):
-        # the current queue state
-        self.queue = queue if queue is not None else list()
-        # the current stack state
-        self.stack = stack if stack is not None else list()
-        # the operations that were applied from the original state to get here.
-        self.ops_string = ops_string
-        # calculates if the queue is sorted and the stack is empty.
-        self.done = self._is_done()
+class InputVals:
+    def __init__(self, town_count, car_count, positions):
+        self.town_count = town_count
+        self.car_count = car_count
+        self._initialize_positions(positions)
 
-    def _is_done(self):
-        return len(self.stack) == 0 and all(self.queue[i] <= self.queue[i+1] for i in range(len(self.queue)-1))
-
-    def operation_Q_allowed(self):
-        return len(self.queue) > 0
-
-    def operation_S_allowed(self):
-        # check if the head of queue is the same as the tail of stack, since the move would be redundant.
-        return len(self.stack) > 0 and (len(self.queue) == 0 or self.queue[0] !=self.stack[-1])
-
-    # executes a transition to a new state by doing a single Q operation
-    def execute_operation_Q(self):
-        new_q = self.queue[1:]
-        new_s = self.stack[:]
-        new_s.append(self.queue[0])
-        new_state = State(self.ops_string + "Q", new_q, new_s)
-        return new_state
-
-    # executes a transition to a new state by doing a single S operation
-    def execute_operation_S(self):
-        new_q = self.queue[:]
-        new_s = self.stack[:-1]
-        new_q.append(self.stack[-1])
-        new_state = State(self.ops_string + "S", new_q, new_s)
-        return new_state
-
-    # Make this class hashable, in order to add it on sets.
-    # First, make the Q and S into tuples [which are immutable, hashable types]
-    # Then hash a tuple of the tuple Q and tuple S, which is immutable and hashable.
-    def __hash__(self):
-        return hash((tuple(self.queue), tuple(self.stack)))
-
-    # This might be redundant.
-    def __eq__(self, other):
-        same_q = self.queue == other.queue
-        same_s = self.stack == other.stack
-        return same_q and same_s
-
-    # This also might be redundant.
-    def __ne__(self, other):
-        return not self == other
+    def _initialize_positions(self, positions):
+        self.positions = {}
+        for p in positions:
+            self.positions[p] = self.positions.get(p, 0) + 1
 
 
 # the file operations
-def parse_file(filename):
+def parse_file(filename) -> InputVals:
     with open(filename, "rt") as f:
         lines = f.readlines()
+        line1 = lines[0].split(" ")
+        town_count = int(line1[0])
+        car_count = int(line1[1])
         # list comprehension to read the values
-        values = [int(x) for x in lines[1].split(" ")]
+        positions = [int(x) for x in lines[1].split(" ")]
         # initialize the original state.
-        return State("", values)
+        return InputVals(town_count, car_count, positions)
 
 
-# bfs without creating the tree.
-# since it's not necessary and this is faster.
-# minor help from https://www.programiz.com/dsa/graph-bfs
-# just to remind me of the queue BFS implementation.
-def bfs(initial: State):
-    visited = {hash(initial)}
-    state_queue = Queue([initial])
+def distances_are_valid(distances:Queue, last=0):
+    current = distances.pop()
+    diff = current - (sum(distances) - last)
+    if diff > 1:
+        return False
+    elif diff < -1:
+        return distances_are_valid(distances, current)
+    else:
+        return True
 
-    # while thingies exist in the queue of states, keep going.
-    while state_queue:
-        curr_state = state_queue.popleft()
-        # short-circuit the bfs is a solution is found.
-        # returns the steps to reach the solution in a string.
-        if curr_state.done:
-            return curr_state.ops_string
 
-        # tries to execute a Q operation
-        if curr_state.operation_Q_allowed():
-            next_state_q = curr_state.execute_operation_Q()
-            q_hash = hash(next_state_q)
-            if q_hash not in visited:
-                visited.add(q_hash)
-                state_queue.append(next_state_q)
+def calculate_town_distance(town, input_vals: InputVals) -> int:
+    distances = Queue()
+    for i in range(input_vals.town_count):
+        current_position = (town + i) % input_vals.town_count
+        current_distance = (input_vals.town_count - i) % input_vals.town_count
+        if current_position in input_vals.positions:
+            for i in range(input_vals.positions[current_position]):
+                distances.appendleft(current_distance)
 
-        # tries to execute an S operation
-        if curr_state.operation_S_allowed():
-            next_state_s = curr_state.execute_operation_S()
-            s_hash = hash(next_state_s)
-            if s_hash not in visited:
-                visited.add(s_hash)
-                state_queue.append(next_state_s)
+    distance_sum = sum(distances)
+    if distances_are_valid(distances):
+        return distance_sum
+    else:
+        return -1
 
-    raise Exception("BFS: No solution found.")
+def calculate_town_distances(input_vals:InputVals):
+    for town in range(input_vals.town_count):
+        distance = calculate_town_distance(town, input_vals)
+        if distance >=0:
+            yield (town, distance)
 
 
 # the solver.
 def solve(filename):
     # parses the file and initializes the first state.
-    initial_state = parse_file(filename)
-    # executes a bfs search of a solution.
-    solution = bfs(initial_state)
-    # the result.
-    print(solution if solution else "empty")
+    input_vals = parse_file(filename)
+    distances = calculate_town_distances(input_vals)
+    result_town, result_distance = next(distances)
+
+    for t, d in distances:
+        if d != -1 and d < result_distance:
+            result_town, result_distance = t,d
+
+    print(f"{result_distance} {result_town}")
 
 
 # testbed.
 def solve_multiple():
-    filename_placeholder = "../testcases/qs@@.txt"
+    filename_placeholder = "testcases/r@@.txt"
     fns = [filename_placeholder.replace("@@", str(i))
-           for i in range(1, 7)]
+           for i in range(1, 3)]
     for fn in fns:
         tic = time.perf_counter()
         solve(fn)
@@ -127,5 +88,5 @@ def solve_multiple():
 
 
 if __name__ == "__main__":
-    #solve(sys.argv[1])
+    # solve(sys.argv[1])
     solve_multiple()
