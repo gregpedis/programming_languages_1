@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.File;
+import java.util.Scanner;
 
 public class Round {
   public static void main(String[] args) {
@@ -10,7 +12,21 @@ public class Round {
   }
 
   public static InputVals ParseFile(String filename) {
-    return null;
+    var file = new File(filename);
+    var scanner = new Scanner(file);
+    var line1 = scanner.nextLine().split(" ");
+    var line2 = scanner.nextLine().split(" ");
+
+    var townCount = Integer.parseInt(line1[0]);
+    var carCount = Integer.parseInt(line1[1]);
+
+    var positions = new ArrayList<Integer>();
+    for (string pos:line2) {
+      positions.add(Integer.parseInt(pos));
+    }
+  
+    var inputVals = new InputVals(townCount, carCount, positions);
+    return inputVals;
   }
 
   public static int GetSum(List<Integer> list) {
