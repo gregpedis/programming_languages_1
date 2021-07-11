@@ -35,13 +35,10 @@ in
   List.map int_of_string splitted 
 
 let get_frequency_table positions =
-  let add_one x =
-    match x with
-    | Some v -> Some (v+1)
-    | None -> Some 1 
-  in
-    let add_or_update freq_table x =
-      IntMap.(update x add_one freq_table)
+    let add_or_update freq_table x = 
+      match (IntMap.find_opt x freq_table) with
+      | Some v -> (IntMap.remove x freq_table) |> IntMap.add x (v+1)
+      | None -> IntMap.add x 1 freq_table
     in
       let rec partial_create lst freq_table =
         match lst with
@@ -56,7 +53,7 @@ let get_populated_towns freq_table town_count =
       if current_town == town_count
         then ()
         else 
-          if IntMap.(mem current_town freq_table) 
+          if IntMap.mem current_town freq_table
           then begin
             result.(idx) <- current_town; 
             partial_create (idx+1) (current_town+1)
@@ -85,7 +82,7 @@ let get_distance townFrom townTo townCount =
   let d = townTo - townFrom in
     if d >= 0 then d else townCount + d
   
-let get_next_populated iv idx = (idx+ 1) mod (Array.length iv.populated_towns)
+let get_next_populated iv idx = (idx+1) mod (Array.length iv.populated_towns)
 
 let is_valid town_distance = 
   town_distance.max_distance 
@@ -95,8 +92,8 @@ let calculate_first_town iv=
   let furthest_town= iv.populated_towns.(0) 
   and partial_sum k v acc = if k == 0 then acc else acc + (get_distance k 0 iv.town_count) * v
   in
-    let maxDistance = get_distance iv.populated_towns.(furthest_town) 0 iv.town_count
-    and totalDistance = IntMap.(fold partial_sum iv.positions 0)
+    let maxDistance = get_distance furthest_town 0 iv.town_count
+    and totalDistance = IntMap.fold partial_sum iv.positions 0
     in
     {
       town_id = 0; 
@@ -113,8 +110,8 @@ let calculate_town iv last =
         f_idx, get_distance iv.populated_towns.(f_idx) current_town_id iv.town_count
     else last.furthest_idx, last.max_distance+1
   in
-    let current_town_car_count = if IntMap.(mem current_town_id iv.positions) 
-      then IntMap.(find current_town_id iv.positions) 
+    let current_town_car_count = if IntMap.mem current_town_id iv.positions 
+      then IntMap.find current_town_id iv.positions
       else 0
     in
       let totalDistance = last.total_distance + iv.car_count - iv.town_count * current_town_car_count
@@ -128,22 +125,23 @@ let calculate_town iv last =
 
 let solve iv = 
   let first_town = calculate_first_town iv in 
-  let rec partial_shit lst idx =
+  let rec partial_create lst idx =
     if idx == iv.town_count 
     then lst
-    else let hd = calculate_town iv (List.hd lst) in partial_shit (hd::lst) (idx+1) 
+    else let hd = calculate_town iv (List.hd lst) in partial_create (hd::lst) (idx+1) 
   in
     let comparer acc curr = 
       if (is_valid curr) 
-      && (not (is_valid acc) || curr.total_distance < acc.total_distance)
+      && (not (is_valid acc) || curr.total_distance <= acc.total_distance)
       then curr else acc
     in
       let get_solution distances = List.fold_left comparer (List.hd distances) distances 
       in
-        get_solution (partial_shit [first_town] 1)
+        get_solution (partial_create [first_town] 1)
 
     
 (* SOLUTION ENTRYPOINT *)
+
 let () = 
   let solution = solve (get_input_vals Sys.argv.(1)) in
   Printf.printf "%d %d\n" solution.total_distance solution.town_id;
