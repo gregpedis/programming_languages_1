@@ -2,8 +2,10 @@
 let second lst = List.nth lst 1
 let last lst = List.nth lst (List.length lst - 1)
 
+(* a module that contains the functionality of a dictionary with int keys *)
 module IntMap = Map.Make(struct type t = int let compare = compare end)
 
+(* container for input variables *)
 type inputVals = { 
   town_count:int; 
   car_count:int; 
@@ -11,6 +13,7 @@ type inputVals = {
   populated_towns : int array;
   }
 
+(* container for a town's properties *)
 type townDistance = {
   town_id:int;
   max_distance:int;
@@ -34,8 +37,10 @@ let parse_secondline line =
 in 
   List.map int_of_string splitted 
 
+  (* creates a frequency IntMap based on the list of positions of cars *)
 let get_frequency_table positions =
     let add_or_update freq_table x = 
+      (* for some reason i could not use IntMap.update, so i did it manually *)
       match (IntMap.find_opt x freq_table) with
       | Some v -> (IntMap.remove x freq_table) |> IntMap.add x (v+1)
       | None -> IntMap.add x 1 freq_table
@@ -47,6 +52,11 @@ let get_frequency_table positions =
       in
         partial_create positions IntMap.empty
 
+(* creates an int array (for faster access than lists)
+that contains the populated towns in 1,..,N,0 order
+I don't need to check the 0 town since i get the keyset size of the freq_table
+and set every single array position to 0, which means it eithers gets overwritten,
+or the last one remains a zero if it should. *)
 let get_populated_towns freq_table town_count = 
   let result = Array.make(IntMap.cardinal freq_table) 0 in
     let rec partial_create idx current_town =
@@ -78,19 +88,28 @@ let get_input_vals fn =
 
 
 (* ALGORITHMS *)
+
+(* gets the distance from townFrom to townTo, 
+only moving towards one direction *)
 let get_distance townFrom townTo townCount = 
   let d = townTo - townFrom in
     if d >= 0 then d else townCount + d
   
+(* gets the next's populated town index,
+in a cyclic manner *)
 let get_next_populated iv idx = (idx+1) mod (Array.length iv.populated_towns)
 
+(* checks if an instance of townDistance is valid *)
 let is_valid town_distance = 
   town_distance.max_distance 
   - (town_distance.total_distance - town_distance.max_distance) <=1
 
+(* calculates the townDistance of townId = 0 *)
 let calculate_first_town iv= 
   let furthest_town= iv.populated_towns.(0) 
-  and partial_sum k v acc = if k == 0 then acc else acc + (get_distance k 0 iv.town_count) * v
+  and partial_sum k v acc = if k == 0 
+    then acc 
+    else acc + (get_distance k 0 iv.town_count) * v
   in
     let maxDistance = get_distance furthest_town 0 iv.town_count
     and totalDistance = IntMap.fold partial_sum iv.positions 0
@@ -102,6 +121,7 @@ let calculate_first_town iv=
       furthest_idx = 0 
     }
 
+(* calculates the townDistance of townId = last.town_id+1 *)
 let calculate_town iv last =
   let current_town_id = last.town_id+1 in
   let furthest_idx, maxDistance = 
@@ -123,6 +143,7 @@ let calculate_town iv last =
           furthest_idx = furthest_idx
         }
 
+(* the solver function *)
 let solve iv = 
   let first_town = calculate_first_town iv in 
   let rec partial_create lst idx =
@@ -141,7 +162,6 @@ let solve iv =
 
     
 (* SOLUTION ENTRYPOINT *)
-
 let () = 
   let solution = solve (get_input_vals Sys.argv.(1)) in
   Printf.printf "%d %d\n" solution.total_distance solution.town_id;

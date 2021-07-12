@@ -9,10 +9,11 @@ import java.util.HashSet;
 
 public class QSsort {
   public static void main(String[] args) {
-    SolveMultiple();
-   //  Solve(args[0]);
+    // SolveMultiple();
+    Solve(args[0]);
   }
 
+  // Solution entrypoint.
   public static void Solve(String filename) {
     try {
       State initial_state = ParseFile(filename);
@@ -32,20 +33,25 @@ public class QSsort {
     }
   }
 
+  // This executes the bfs which tries to reach a valid end state.
   public static String ExecuteBFS(State initial) {
     HashSet<Integer> visited = new HashSet<Integer>();
     LinkedList<State> stateQueue = new LinkedList<State>();
 
+    // Initialize the state queue and the visited set with the initial state.
     visited.add(initial.hashCode());
     stateQueue.add(initial);
 
+    // pop one and start the while loop.
     while (stateQueue.size() > 0) {
       State current = stateQueue.remove();
 
+      // If the current state is a valid final state, return the string of operations.
       if (current.IsDone()) {
         return current.GetOperationsString();
       }
 
+      // Add a new state if a Q operation is allowed by executing a Q operation.
       if (current.OperationAllowedQ()) {
         State nextStateQ = current.ExecuteOperationQ();
         if (!visited.contains(nextStateQ.hashCode())) {
@@ -54,6 +60,7 @@ public class QSsort {
         }
       }
 
+      // Add a new state if an S operation is allowed by executing an S operation.
       if (current.OperationAllowedS()) {
         State nextStateS = current.ExecuteOperationS();
         if (!visited.contains(nextStateS.hashCode())) {
@@ -62,11 +69,11 @@ public class QSsort {
         }
       }
 
-      
-      }  return "what the fuck";
-    
+    }
+    return "hey this is not supposed to happen";
   }
 
+  // Parses a file and returns the initial state.
   public static State ParseFile(String filename) throws FileNotFoundException {
     File myfile = new File(filename);
     Scanner scanner = new Scanner(myfile);
@@ -100,10 +107,17 @@ class State {
     _stack = stack;
   }
 
+  // This provides "uniqueness" based on a state and a queue via prime number magic.
+  @Override
+  public int hashCode() {
+    return (23 * 37 + _queue.hashCode()) * 37 + _stack.hashCode();
+  }
+
   public String GetOperationsString() {
     return _operationsString.isEmpty() ? "empty" : _operationsString;
   }
 
+  // A state is an ending state if the stack is empty and the queue is sorted.
   public boolean IsDone() {
     return _stack.isEmpty() && isSorted(_queue);
   }

@@ -61,6 +61,9 @@ public class Round {
         ? GetDistance(iv.GetNextPopulatedTown(), currentTownId, iv.TownCount)
         : last.MaxDistance + 1;
 
+    // Total distance is last total distance 
+    // plus the car amount (since all of them move 1 extra step) 
+    // minus the cars that are in the current town times the steps they would need to take.
     int currentTownCarCount = iv.Positions.containsKey(currentTownId) ? iv.Positions.get(currentTownId) : 0;
     int totalDistance = last.TotalDistance + iv.CarCount - iv.TownCount * currentTownCarCount;
 
@@ -103,7 +106,8 @@ public class Round {
   }
 }
 
-// This class is a container for a town, containing the max and total distance for this town.
+// This class is a container for a town, 
+// containing the max and total distance for this town.
 class TownDistance {
   public int TownId;
   public int MaxDistance;
@@ -150,7 +154,7 @@ class InputVals {
   }
 
   // An arraylist that contains all the towns that have cars, which goes 1..N,0
-  // Also initialize an index as -1.
+  // Also initialize the cyclic index as -1.
   private void InitializePopulatedTowns() {
     _populatedTowns = new ArrayList<Integer>();
     for (int i = 1; i < TownCount; i++) {
@@ -166,7 +170,9 @@ class InputVals {
     _currentPopulatedTownIndex = -1;
   }
 
-  // Consumes the arraylist as a sudo-queue, "bumbing" the currentIndex to the next one, in a cyclic manner.
+  // Consumes the arraylist as a sudo-queue, 
+  // "bumbing" the currentIndex to the next one, 
+  // in a cyclic manner.
   public int GetNextPopulatedTown() {
     _currentPopulatedTownIndex = (_currentPopulatedTownIndex + 1) % _populatedTowns.size();
     return _populatedTowns.get(_currentPopulatedTownIndex);
